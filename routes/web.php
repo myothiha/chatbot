@@ -13,6 +13,7 @@
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,14 +35,14 @@ Route::get('/webhook', function (Request $request) {
         if ($mode == "subscribe" && $token == $VERIFY_TOKEN) {
             // Responds with the challenge token from the request
 //            echo 'WEBHOOK_VERIFIED';
-            dd($challenge);
+            echo $challenge;
         }
     }
 });
 
 Route::post('/webhook', function (Request $request) {
 //    dd($request->all());
-
+    Log::debug($request->all());
     // Checks this is an event from a page subscription
     if ($request->object == 'page') {
         // Iterates over each entry - there may be multiple if batched
@@ -49,7 +50,9 @@ Route::post('/webhook', function (Request $request) {
             // Gets the message. entry.messaging is an array, but
             // will only ever contain one message, so we get index 0
             $webhook_event = $entry_item["messaging"][0]["message"];
-            dd($webhook_event);
+            echo $webhook_event;
         }
     }
 });
+
+Route::post('/webhook', 'ChatbotController@handle');
