@@ -11,48 +11,20 @@
 |
 */
 
+Route::get('/', 'QuestionController@index');
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+Route::get('/webhook', 'ChatBotController@verify');
+Route::post('/webhook', 'ChatBotController@handle');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::resource('questions', 'QuestionController');
 
-Route::get('/webhook', function (Request $request) {
-//    dd($request->all());
-    // Your verify token. Should be a random string.
-    $VERIFY_TOKEN = "test_token";
+Route::get('/questions',                            'QuestionController@index');
+Route::get('/questions/create/{parent_id}',          'QuestionController@create');
+Route::post('/questions/{parent_id}',                'QuestionController@store');
+Route::get('/questions/show/{parent_id}',            'QuestionController@show');
+Route::get('/questions/{parent_id}/edit/{question}', 'QuestionController@edit');
+Route::put('/questions/{parent_id}/update/{question}', 'QuestionController@update');
+Route::delete('/questions/{parent_id}/delete/{question}', 'QuestionController@destroy');
 
-    // Parse the query params
-    $mode = $request->hub_mode;
-    $token = $request->hub_verify_token;
-    $challenge = $request->hub_challenge;
-
-    // Checks if a token and mode is in the query string of the request
-    if ($mode && $token) {
-        // Checks the mode and token sent is correct
-        if ($mode == "subscribe" && $token == $VERIFY_TOKEN) {
-            // Responds with the challenge token from the request
-//            echo 'WEBHOOK_VERIFIED';
-            echo $challenge;
-        }
-    }
-});
-
-Route::post('/webhook', function (Request $request) {
-//    dd($request->all());
-    Log::debug($request->all());
-    // Checks this is an event from a page subscription
-    if ($request->object == 'page') {
-        // Iterates over each entry - there may be multiple if batched
-        foreach ($request->entry as $entry_item) {
-            // Gets the message. entry.messaging is an array, but
-            // will only ever contain one message, so we get index 0
-            $webhook_event = $entry_item["messaging"][0]["message"];
-            echo $webhook_event;
-        }
-    }
-});
-
-Route::post('/webhook', 'ChatbotController@handle');
+Route::resource('answers', 'AnswerController');
+Route::resource('answersDetail', 'AnswerDetailController');
