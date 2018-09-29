@@ -27,7 +27,10 @@ class QuestionController extends Controller
      */
     public function create($parentId)
     {
-        return view('admin.questions.create');
+        return view('admin.questions.create', [
+            'parentId'  => $parentId,
+            'types'     => Question::TYPES,
+        ]);
     }
 
     /**
@@ -36,9 +39,22 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $parentId)
     {
-        //
+//        dd($request->all());
+        $question = new Question();
+        $question->parent_id = $parentId;
+        $question->type = $request->type;
+        $question->traceQId = $request->traceQId;
+        $question->tracePId = $request->tracePId;
+        $question->button_mm3 = $request->button_mm3;
+        $question->message_mm3 = $request->message_mm3;
+        $question->button_zg = $request->button_zg;
+        $question->message_zg = $request->message_zg;
+        $question->button_en = $request->button_en;
+        $question->message_en = $request->message_en;
+        $question->image = $request->image;
+        $question->save();
     }
 
     /**
