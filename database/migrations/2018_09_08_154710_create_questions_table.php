@@ -17,7 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('parent_id');
 
-            $table->unsignedInteger('type');
+            $table->unsignedInteger('type')->default(1);
             $table->string('traceQId')->default(null);
             $table->string('tracePId')->default(null);
 

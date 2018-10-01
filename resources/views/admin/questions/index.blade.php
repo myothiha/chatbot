@@ -12,7 +12,7 @@
         Questions</a>
     </li>
     <li class="breadcrumb-item active">
-        <a href="{{ action('QuestionController@index') }}">List</a>
+        <a href="{{ action('QuestionController@index', $parentId) }}">List</a>
     </li>
 @endsection
 
@@ -30,7 +30,9 @@
                 <th scope="col">#</th>
                 <th scope="col">Question (EN)</th>
                 <th scope="col">Question (MM)</th>
-                <th scope="col">Action</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -40,15 +42,17 @@
                     <th scope="row">{{ ++$index }}</th>
                     <td>{{ $question->message_en }}</td>
                     <td>{{ $question->message_zg }}</td>
+                    <td><a href="{{ action('QuestionController@index', $question->id) }}"
+                           class="btn btn-outline-info">Sub Questions</a></td>
+                    <td><a href="{{ action('QuestionController@edit', [$parentId, $question->id]) }}"
+                           class="btn btn-outline-dark">Edit</a></td>
                     <td>
                         <form action="{{ action('QuestionController@destroy', [$parentId, $question->id]) }}"
                               method="post">
 
                             <input type="hidden" name="_method" value="DELETE"/>
 
-                            <a href="{{ action('QuestionController@edit', [$parentId, $question->id]) }}"
-                               class="btn btn-secondary">Edit</a>
-                            <input type="submit" class="btn btn-danger" name="btnSubmit" value="Delete"/>
+                            <input type="submit" class="btn btn-outline-danger" name="btnSubmit" value="Delete"/>
                         </form>
                     </td>
                 </tr>

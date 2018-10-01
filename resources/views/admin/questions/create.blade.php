@@ -12,7 +12,7 @@
         Questions</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{ action('QuestionController@index') }}">List</a>
+        <a href="{{ action('QuestionController@index', $parentId) }}">List</a>
     </li>
     <li class="breadcrumb-item active">
         <a href="{{ action('QuestionController@create', $parentId) }}">Create Question</a>
