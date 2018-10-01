@@ -26,5 +26,7 @@ Route::get('/questions/{parentId}/edit/{question}', 'QuestionController@edit');
 Route::put('/questions/{parentId}/update/{question}', 'QuestionController@update');
 Route::delete('/questions/{parentId}/delete/{question}', 'QuestionController@destroy');
 
+Route::post('/questionTypes/{parentId}',               'QuestionTypeController@store');
+
 Route::resource('answers', 'AnswerController');
 Route::resource('answersDetail', 'AnswerDetailController');

@@ -19,10 +19,27 @@
 @section('content')
 
     <!-- Content Section -->
-    <div class="row mb-4">
 
+    <div class="row">
         <a href="{{ action('QuestionController@create', $parentId) }}" class="btn btn-outline-info mb-3">Create New
             Question</a>
+    </div>
+
+    <div class="row  mb-4">
+        <form class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="type" class="sr-only">Type: </label>
+                <select id="type" name="type" class="form-control">
+                    @foreach( \App\Models\Questions\Question::TYPES as $key => $value)
+                        <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <input type="submit" name="btnSubmit" class="btn btn-outline-info" value="Save">
+        </form>
+    </div>
+
+    <div class="row mb-4">
 
         <table class="table table-hover">
             <thead>
