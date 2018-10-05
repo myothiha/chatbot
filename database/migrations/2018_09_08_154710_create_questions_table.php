@@ -17,20 +17,19 @@ class CreateQuestionsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('parent_id');
 
-            $table->unsignedInteger('type')->default(1);
-            $table->string('traceQId')->default(null);
-            $table->string('tracePId')->default(null);
+            $table->string('traceQId')->nullable();
+            $table->string('tracePId')->nullable();
 
-            $table->text('button_mm3');
-            $table->longText('message_mm3');
+            $table->text('button_mm3')->nullable();
+            $table->longText('message_mm3')->nullable();
 
-            $table->text('button_zg');
-            $table->longText('message_zg');
+            $table->text('button_zg')->nullable();
+            $table->longText('message_zg')->nullable();
 
-            $table->text('button_en');
-            $table->longText('message_en');
+            $table->text('button_en')->nullable();
+            $table->longText('message_en')->nullable();
 
-            $table->text('image')->default(null);
+            $table->text('image')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
 
             $table->timestamps();

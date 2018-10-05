@@ -28,7 +28,6 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
 
         $question = new Question();
         $question->parent_id = $parentId;
-        $question->type = $request->type;
         $question->traceQId = $request->traceQId;
         $question->tracePId = $request->tracePId;
         $question->button_mm3 = $request->button_mm3;
@@ -54,7 +53,6 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         }
 
         $question->parent_id = $parentId;
-        $question->type = $request->type;
         $question->traceQId = $request->traceQId;
         $question->tracePId = $request->tracePId;
         $question->button_mm3 = $request->button_mm3;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
+use App\Models\QuestionTypes\QuestionType;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -25,9 +26,12 @@ class QuestionController extends Controller
     public function index($parentId = 0)
     {
         $questions = $this->questionRepository->getSubQuestions($parentId);
+        $questionType = QuestionType::where('question_id', $parentId)->first();
+//        dd($questionType->toArray());
         return view('admin.questions.index', [
             'questions' => $questions,
-            'parentId' => $parentId
+            'parentId' => $parentId,
+            'questionType' => $questionType->type ?? null
         ]);
     }
 

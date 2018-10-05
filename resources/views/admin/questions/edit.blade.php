@@ -30,21 +30,6 @@
         <input type="hidden" name="_method" value="PUT" />
 
         <div class="form-group row">
-            <label for="type" class="col-sm-2 col-form-label">Type</label>
-            <div class="col-sm-10">
-                <select id="type" name="type" class="form-control">
-                    @foreach( $types as $key => $value)
-                        @if($value == $question->type)
-                            <option value="{{ $key }}" {{ 'selected' }}>{{ $value }}</option>
-                        @else
-                            <option value="{{ $key }}">{{ $value }}</option>
-                        @endif
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Trace Qid</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="traceQid" name="traceQId" placeholder="Trace Qid" value="{{ $question->traceQId }}">

@@ -35,9 +35,9 @@ class QuestionTypeController extends Controller
      */
     public function store(Request $request, $parentId)
     {
-        $questionType = new QuestionType();
+        $questionType = QuestionType::firstOrNew(['question_id' => $parentId]);
         $questionType->type = $request->type;
-        $request->question_id = $parentId;
+        $questionType->question_id = $parentId;
         $questionType->save();
         return redirect('/questions/' . $parentId);
     }

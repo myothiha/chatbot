@@ -26,12 +26,28 @@
     </div>
 
     <div class="row  mb-4">
-        <form class="form-inline">
+        <p>Type:</p>
+
+        <form class="form-inline" action="{{ action('QuestionTypeController@store', $parentId) }}" method="POST">
+
+            {{ csrf_field() }}
+
             <div class="form-group mx-sm-3 mb-2">
                 <label for="type" class="sr-only">Type: </label>
-                <select id="type" name="type" class="form-control">
+                <select id="type" name="type" class="form-control" required>
+
+                    @if(!$questionType)
+                        <option value="" selected>None</option>
+                    @endif
+
                     @foreach( \App\Models\Questions\Question::TYPES as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
+
+                        @if ($questionType == $key)
+                            <option value="{{ $key }}" selected>{{ $value }}</option>
+                        @else
+                            <option value="{{ $key }}">{{ $value }}</option>
+                        @endif
+
                     @endforeach
                 </select>
             </div>
