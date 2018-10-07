@@ -6,7 +6,6 @@ use App\Models\Base\BaseRepository;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
 use App\Utils\Uploaders\ImageUploader;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class QuestionRepository extends BaseRepository implements QuestionRepositoryInterface
@@ -24,7 +23,11 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
 
     function create(Request $request, $parentId)
     {
-        $imagePath = ImageUploader::upload($request->image, 'uploads/', Question::IMAGE_SCALE);
+        if ($request->file('image')) {
+            $imagePath = ImageUploader::upload($request->image, 'uploads/', Question::IMAGE_SCALE);
+        } else {
+            $imagePath = null;
+        }
 
         $question = new Question();
         $question->parent_id = $parentId;
@@ -47,7 +50,6 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         if ($request->file('image')) {
             $question->deleteImages();
             $imagePath = ImageUploader::upload($request->image, 'uploads/', Question::IMAGE_SCALE);
-
         } else {
             $imagePath = $request->prev_image;
         }

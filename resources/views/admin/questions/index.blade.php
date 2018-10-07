@@ -83,6 +83,8 @@
                         <form action="{{ action('QuestionController@destroy', [$parentId, $question->id]) }}"
                               method="post">
 
+                            {{ csrf_field() }}
+
                             <input type="hidden" name="_method" value="DELETE"/>
 
                             <input type="submit" class="btn btn-outline-danger" name="btnSubmit" value="Delete"/>

@@ -18,15 +18,15 @@ Route::post('/webhook', 'ChatBotController@handle');
 
 //Route::resource('questions', 'QuestionController');
 
-Route::get('/questions/{parentId?}',                            'QuestionController@index');
-Route::get('/questions/{parentId}/create',          'QuestionController@create');
-Route::post('/questions/{parentId}',               'QuestionController@store');
-Route::get('/questions/show/{parentId}',            'QuestionController@show');
-Route::get('/questions/{parentId}/edit/{question}', 'QuestionController@edit');
-Route::put('/questions/{parentId}/update/{question}', 'QuestionController@update');
-Route::delete('/questions/{parentId}/delete/{question}', 'QuestionController@destroy');
+Route::get('/questions/{parentId?}',                        'QuestionController@index');
+Route::get('/questions/{parentId}/create',                  'QuestionController@create');
+Route::post('/questions/{parentId}',                        'QuestionController@store');
+Route::get('/questions/show/{parentId}',                    'QuestionController@show');
+Route::get('/questions/{parentId}/edit/{question}',         'QuestionController@edit');
+Route::put('/questions/{parentId}/update/{question}',       'QuestionController@update');
+Route::delete('/questions/{parentId}/delete/{question}',    'QuestionController@destroy');
 
-Route::post('/questionTypes/{parentId}',               'QuestionTypeController@store');
+Route::post('/questionTypes/{parentId}', 'QuestionTypeController@store');
 
 Route::resource('answers', 'AnswerController');
 Route::resource('answersDetail', 'AnswerDetailController');

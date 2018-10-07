@@ -50,6 +50,11 @@ class Question extends Model
         return $query->where('parent_id', $parentId);
     }
 
+    public function getImageAttribute($value)
+    {
+        return $value ?? "default.png";
+    }
+
     /**
      * @return string
      */
@@ -71,7 +76,8 @@ class Question extends Model
      */
     public function deleteImages()
     {
-        if (file_exists(public_path() . $this->largeImage) ) {
+//        dd($this->image);
+        if (file_exists(public_path() . $this->largeImage) AND isset($this->image) ) {
             unlink(public_path() . $this->largeImage);
             unlink(public_path() . $this->thumbnail);
         }
