@@ -36,7 +36,7 @@ class ChatBot
             ],
         ];
 
-        $this->client->request('POST', '/', [
+        $this->client->request('POST', ApiConstant::MESSAGE, [
            'query'  => ['access_token' => ApiConstant::ACCESS_TOKEN],
             'json'  => $data,
         ]);
