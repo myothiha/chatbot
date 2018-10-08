@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Messenger\ApiConstant;
+use App\Services\Messenger\ChatBot;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ChatBotController extends Controller
 {
 
     const URL = "https://graph.facebook.com/v2.6/me/messages";
-    const ACCESS_TOKEN = "EAAgS93j7IooBABeFFZCXgRXIRkTrWMHmonrccFTwLs4m2drPznDweU5gqesue1qZCADJ0E8ZBh3hwlePq6aBIrHdVB3qzvAJytimM6JW2CjaQxSfGyIWaJpkDaafb0QmTs6Gl8yjyjHbZANN0Fg9gY598qkI30OlZCpTOxZCeHjYE9aL8mnW40";
+
+    private $chatbot;
+
+    public function __construct(ChatBot $chatBot)
+    {
+        $this->chatbot = $chatBot;
+    }
 
     public function verify(Request $request)
     {
@@ -34,16 +43,47 @@ class ChatBotController extends Controller
     {
         Log::debug($request->all());
 
+        $senderId = $this->getSenderId($request);
+
         // Checks this is an event from a page subscription
         if ($request->object == 'page') {
             if( $message = $this->getTextMessage($request) )
             {
 
             }
+            elseif ( $payload = $this->getPayload($request) )
+            {
+                if( $payload == "start" ) {
+                    $this->chooseLanguage($senderId);
+                }
+            }
 
             // just to verify web hook
             echo $this->getTextMessage($request);
         }
+    }
+
+    private function chooseLanguage($senderId) {
+
+        $buttons = [
+            [
+                "type"      => "postback",
+                "title"     => "ျမန္မာ (ေဇာ္ဂ်ီ)",
+                "payload"   => ApiConstant::ZAWGYI,
+            ],
+            [
+                "type"      => "postback",
+                "title"     => "မြန်မာ (ယူနီကုဒ်)",
+                "payload"   => ApiConstant::MYANMAR3,
+            ],
+            [
+                "type"      => "postback",
+                "title"     => "English",
+                "payload"   => ApiConstant::ENGLISH,
+            ],
+        ];
+
+        $this->chatbot->postBackButton($senderId, "Choose Language.", $buttons);
     }
 
     private function getTextMessage(Request $request)
@@ -57,7 +97,12 @@ class ChatBotController extends Controller
         return $request['entry'][0]["messaging"][0]["message"];
     }
 
-    private function senderId(Request $request)
+    private function getPayload(Request $request)
+    {
+        return $request['entry'][0]['messaging'][0]['postback']['payload'];
+    }
+
+    private function getSenderId(Request $request)
     {
         return $request['entry'][0]['messaging'][0]['sender']['id'];
     }
