@@ -4,19 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
+use App\Services\Messenger\RequestHandlerTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ChatBotController extends Controller
 {
 
-    const URL = "https://graph.facebook.com/v2.6/me/messages";
+    use RequestHandlerTrait;
 
-    private $chatbot;
+    private $chatBot;
 
     public function __construct(ChatBot $chatBot)
     {
-        $this->chatbot = $chatBot;
+        $this->chatBot = $chatBot;
     }
 
     public function verify(Request $request)
@@ -47,14 +48,13 @@ class ChatBotController extends Controller
 
         // Checks this is an event from a page subscription
         if ($request->object == 'page') {
-            if( $message = $this->getTextMessage($request) )
-            {
 
-            }
-            elseif ( $payload = $this->getPayload($request) )
+            if ( $payload = $this->getPayload($request) )
             {
                 if( $payload == "start" ) {
-                    $this->chooseLanguage($senderId);
+                    $this->askToChooseLanguage($senderId);
+                } else {
+
                 }
             }
 
@@ -63,7 +63,7 @@ class ChatBotController extends Controller
         }
     }
 
-    private function chooseLanguage($senderId) {
+    private function askToChooseLanguage($senderId) {
 
         $buttons = [
             [
@@ -83,27 +83,6 @@ class ChatBotController extends Controller
             ],
         ];
 
-        $this->chatbot->postBackButton($senderId, "Choose Language.", $buttons);
-    }
-
-    private function getTextMessage(Request $request)
-    {
-        // Iterates over each entry - there may be multiple if batched
-        /*foreach ($request->entry as $entry_item) {
-            // Gets the message. entry.messaging is an array, but
-            // will only ever contain one message, so we get index 0
-            $message = $entry_item["messaging"][0]["message"];
-        }*/
-        return $request['entry'][0]["messaging"][0]["message"];
-    }
-
-    private function getPayload(Request $request)
-    {
-        return $request['entry'][0]['messaging'][0]['postback']['payload'];
-    }
-
-    private function getSenderId(Request $request)
-    {
-        return $request['entry'][0]['messaging'][0]['sender']['id'];
+        $this->chatBot->postBackButton($senderId, "Choose Language.", $buttons);
     }
 }

@@ -28,5 +28,15 @@ Route::delete('/questions/{parentId}/delete/{question}',    'QuestionController@
 
 Route::post('/questionTypes/{parentId}', 'QuestionTypeController@store');
 
+Route::get('/answers/{parentId?}',                      'AnswerController@index');
+Route::get('/answers/{parentId}/create',                'AnswerController@create');
+Route::post('/answers/{parentId}',                      'AnswerController@store');
+Route::get('/answers/show/{parentId}',                  'AnswerController@show');
+Route::get('/answers/{parentId}/edit/{answer}',         'AnswerController@edit');
+Route::put('/answers/{parentId}/update/{answer}',       'AnswerController@update');
+Route::delete('/answers/{parentId}/delete/{answer}',    'AnswerController@destroy');
+
+Route::post('/questionTypes/{parentId}', 'AnswerTypeController@store');
+
 Route::resource('answers', 'AnswerController');
 Route::resource('answersDetail', 'AnswerDetailController');

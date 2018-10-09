@@ -8,11 +8,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
+                <li class="nav-item {{ request()->is('questions/*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ action('QuestionController@index', 0) }}">Questions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="services.html">Services</a>
+                    <a class="nav-link" href="services.html">Answers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
