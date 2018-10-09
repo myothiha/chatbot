@@ -26,17 +26,16 @@ Route::get('/questions/{parentId}/edit/{question}',         'QuestionController@
 Route::put('/questions/{parentId}/update/{question}',       'QuestionController@update');
 Route::delete('/questions/{parentId}/delete/{question}',    'QuestionController@destroy');
 
-Route::post('/questionTypes/{parentId}', 'QuestionTypeController@store');
+Route::post('/questionTypes/{parentId}',                  'QuestionTypeController@store');
 
-Route::get('/answers/{parentId?}',                      'AnswerController@index');
-Route::get('/answers/{parentId}/create',                'AnswerController@create');
-Route::post('/answers/{parentId}',                      'AnswerController@store');
-Route::get('/answers/show/{parentId}',                  'AnswerController@show');
-Route::get('/answers/{parentId}/edit/{answer}',         'AnswerController@edit');
-Route::put('/answers/{parentId}/update/{answer}',       'AnswerController@update');
-Route::delete('/answers/{parentId}/delete/{answer}',    'AnswerController@destroy');
+Route::get('/answers/{questionId?}',                      'AnswerController@index');
+Route::get('/answers/{questionId}/create',                'AnswerController@create');
+Route::post('/answers/{questionId}',                      'AnswerController@store');
+Route::get('/answers/show/{questionId}',                  'AnswerController@show');
+Route::get('/answers/{questionId}/edit/{answer}',         'AnswerController@edit');
+Route::put('/answers/{questionId}/update/{answer}',       'AnswerController@update');
+Route::delete('/answers/{questionId}/delete/{answer}',    'AnswerController@destroy');
 
-Route::post('/questionTypes/{parentId}', 'AnswerTypeController@store');
+Route::post('/answerTypes/{questionId}', 'AnswerTypeController@store');
 
-Route::resource('answers', 'AnswerController');
-Route::resource('answersDetail', 'AnswerDetailController');
+//Route::resource('answersDetail', 'AnswerDetailController');

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\AnswerType;
+use App\Models\AnswerTypes\AnswerType;
 use Illuminate\Http\Request;
 
 class AnswerTypeController extends Controller
@@ -33,9 +33,13 @@ class AnswerTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $questionId)
     {
-        //
+        $answerType = AnswerType::firstOrNew(['answer_id' => $questionId]);
+        $answerType->type = $request->type;
+        $answerType->answer_id = $questionId;
+        $answerType->save();
+        return redirect('/answers/' . $questionId);
     }
 
     /**

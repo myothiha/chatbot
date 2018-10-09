@@ -15,6 +15,8 @@ class CreateAnswerTypesTable extends Migration
     {
         Schema::create('answer_types', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('answer_id')->unique();
+            $table->unsignedTinyInteger('type');
             $table->timestamps();
         });
     }

@@ -9,7 +9,7 @@
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        Questions</a>
+        <a>Questions</a>
     </li>
     <li class="breadcrumb-item">
         <a href="{{ action('QuestionController@index', $parentId) }}">List</a>

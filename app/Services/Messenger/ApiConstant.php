@@ -22,4 +22,20 @@ class ApiConstant
     const MYANMAR3 = "mm3";
 
     const ENGLISH = "en";
+
+    //API Template Types
+
+    const TEXT = 1;
+    const QUICK_REPLY = 2;
+    const BUTTON = 3;
+    const IMAGE = 4;
+    const GALLERY = 5;
+
+    const TYPES = [
+        self::TEXT          => 'Text',
+        self::QUICK_REPLY   => 'Quick Reply',
+        self::BUTTON        => 'Button',
+        self::IMAGE         => 'Image',
+        self::GALLERY       => 'Gallery',
+    ];
 }

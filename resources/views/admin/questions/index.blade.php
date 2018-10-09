@@ -40,7 +40,7 @@
                         <option value="" selected>None</option>
                     @endif
 
-                    @foreach( \App\Models\Questions\Question::TYPES as $key => $value)
+                    @foreach( $types as $key => $value)
 
                         @if ($questionType == $key)
                             <option value="{{ $key }}" selected>{{ $value }}</option>

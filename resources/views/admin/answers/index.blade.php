@@ -2,17 +2,17 @@
 
 @section('title', 'Page Title')
 
-@section('heading', 'Questions')
+@section('heading', 'Answers')
 
-@section('subheading', 'List')
+@section('subheading', "For " . ($question->message ?? "Top Question") )
 
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        Questions</a>
+        Answers</a>
     </li>
     <li class="breadcrumb-item active">
-        <a href="{{ action('QuestionController@index', $parentId) }}">List</a>
+        <a href="{{ action('AnswerController@index', $questionId) }}">List</a>
     </li>
 @endsection
 
@@ -21,14 +21,14 @@
     <!-- Content Section -->
 
     <div class="row">
-        <a href="{{ action('QuestionController@create', $parentId) }}" class="btn btn-outline-info mb-3">Create New
-            Question</a>
+        <a href="{{ action('AnswerController@create', $questionId) }}" class="btn btn-outline-info mb-3">Create New
+            Answer</a>
     </div>
 
     <div class="row  mb-4">
         <p>Type:</p>
 
-        <form class="form-inline" action="{{ action('QuestionTypeController@store', $parentId) }}" method="POST">
+        <form class="form-inline" action="{{ action('AnswerTypeController@store', $questionId) }}" method="POST">
 
             {{ csrf_field() }}
 
@@ -36,13 +36,13 @@
                 <label for="type" class="sr-only">Type: </label>
                 <select id="type" name="type" class="form-control" required>
 
-                    @if(!$questionType)
+                    @if(!$answerType)
                         <option value="" selected>None</option>
                     @endif
 
-                    @foreach( \App\Models\Questions\Question::TYPES as $key => $value)
+                    @foreach( $types as $key => $value)
 
-                        @if ($questionType == $key)
+                        @if ($answerType == $key)
                             <option value="{{ $key }}" selected>{{ $value }}</option>
                         @else
                             <option value="{{ $key }}">{{ $value }}</option>
@@ -61,26 +61,26 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Question (EN)</th>
-                <th scope="col">Question (MM)</th>
+                <th scope="col">Answer (EN)</th>
+                <th scope="col">Answer (MM)</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-            @foreach($questions as $index => $question)
+            @foreach($answers as $index => $question)
                 <tr>
 
                     <th scope="row">{{ ++$index }}</th>
                     <td>{{ $question->message_en }}</td>
                     <td>{{ $question->message_zg }}</td>
-                    <td><a href="{{ action('QuestionController@index', $question->id) }}"
+                    <td><a href="{{ action('AnswerController@index', $question->id) }}"
                            class="btn btn-outline-info">Sub Questions</a></td>
-                    <td><a href="{{ action('QuestionController@edit', [$parentId, $question->id]) }}"
+                    <td><a href="{{ action('AnswerController@edit', [$questionId, $question->id]) }}"
                            class="btn btn-outline-dark">Edit</a></td>
                     <td>
-                        <form action="{{ action('QuestionController@destroy', [$parentId, $question->id]) }}"
+                        <form action="{{ action('AnswerController@destroy', [$questionId, $question->id]) }}"
                               method="post">
 
                             {{ csrf_field() }}

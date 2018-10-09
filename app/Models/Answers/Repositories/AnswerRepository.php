@@ -17,9 +17,14 @@ use Illuminate\Http\Request;
 class AnswerRepository extends BaseRepository implements AnswerRepositoryInterface
 {
 
+    public function __construct(Answer $answer)
+    {
+        parent::__construct($answer);
+    }
+
     function getAnswers($questionId)
     {
-        // TODO: Implement getAnswers() method.
+//        return $this->model->find(['question_id' => $questionId]);
     }
 
     function create(Request $request, $questionId)

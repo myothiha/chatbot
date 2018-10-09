@@ -2,27 +2,27 @@
 
 @section('title', 'Page Title')
 
-@section('heading', 'Questions')
+@section('heading', 'Create Answer')
 
-@section('subheading', 'List')
+@section('subheading',  "For " . ($question->message ?? "Top Question") )
 
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        Questions</a>
+        <a>Questions</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="{{ action('QuestionController@index', $parentId) }}">List</a>
+        <a href="{{ action('AnswerController@index', $questionId) }}">List</a>
     </li>
     <li class="breadcrumb-item active">
-        <a href="{{ action('QuestionController@create', $parentId) }}">Create Question</a>
+        <a href="{{ action('AnswerController@create', $questionId) }}">Create Question</a>
     </li>
 @endsection
 
 @section('content')
 
     <!-- Content Section -->
-    <form action="{{ action('QuestionController@store', $parentId) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ action('AnswerController@store', $questionId) }}" method="post" enctype="multipart/form-data">
 
         {{ csrf_field() }}
 

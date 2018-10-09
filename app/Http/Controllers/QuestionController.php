@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
 use App\Models\QuestionTypes\QuestionType;
+use App\Services\Messenger\ApiConstant;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -30,7 +31,8 @@ class QuestionController extends Controller
 //        dd($questionType->toArray());
         return view('admin.questions.index', [
             'questions' => $questions,
-            'parentId' => $parentId,
+            'parentId'  => $parentId,
+            'types'     => ApiConstant::TYPES,
             'questionType' => $questionType->type ?? null
         ]);
     }
@@ -45,7 +47,7 @@ class QuestionController extends Controller
     {
         return view('admin.questions.create', [
             'parentId' => $parentId,
-            'types' => Question::TYPES,
+            'types' => ApiConstant::TYPES,
         ]);
     }
 
@@ -76,7 +78,7 @@ class QuestionController extends Controller
         return view('admin.questions.edit', [
             'question'  => $question,
             'parentId'  => $parentId,
-            'types'     => Question::TYPES,
+            'types'     => ApiConstant::TYPES,
         ]);
     }
 

@@ -21,6 +21,11 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         return Question::subQuestions($parentId)->get();
     }
 
+    function get($questionId)
+    {
+        return Question::find($questionId);
+    }
+
     function create(Request $request, $parentId)
     {
         if ($request->file('image')) {

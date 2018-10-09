@@ -11,8 +11,8 @@
                 <li class="nav-item {{ request()->is('questions/*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ action('QuestionController@index', 0) }}">Questions</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="services.html">Answers</a>
+                <li class="nav-item {{ request()->is('answers/*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ action('AnswerController@index', 0) }}">Answers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
