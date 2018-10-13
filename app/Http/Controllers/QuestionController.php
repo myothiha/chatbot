@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answers\Answer;
+use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
 use App\Models\QuestionTypes\QuestionType;
@@ -28,12 +30,17 @@ class QuestionController extends Controller
     {
         $questions = $this->questionRepository->getSubQuestions($parentId);
         $questionType = QuestionType::where('question_id', $parentId)->first();
-//        dd($questionType->toArray());
+
+        $answers = Answer::where('question_id', $parentId)->get();
+        $answerType = AnswerType::where('answer_id', $parentId)->first();
+
         return view('admin.questions.index', [
             'questions' => $questions,
+            'answers' => $answers,
             'parentId'  => $parentId,
             'types'     => ApiConstant::TYPES,
-            'questionType' => $questionType->type ?? null
+            'questionType' => $questionType->type ?? null,
+            'answerType' => $answerType->type ?? null,
         ]);
     }
 

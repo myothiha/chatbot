@@ -20,15 +20,17 @@
 
     <!-- Content Section -->
 
+    <!-- Answer Create Button -->
     <div class="row">
-        <a href="{{ action('AnswerController@create', $questionId) }}" class="btn btn-outline-info mb-3">Create New
+        <a href="{{ action('AnswerController@create', $parentId) }}" class="btn btn-outline-info mb-3">Create New
             Answer</a>
     </div>
 
+    <!-- Answer Type -->
     <div class="row  mb-4">
         <p>Type:</p>
 
-        <form class="form-inline" action="{{ action('AnswerTypeController@store', $questionId) }}" method="POST">
+        <form class="form-inline" action="{{ action('AnswerTypeController@store', $parentId) }}" method="POST">
 
             {{ csrf_field() }}
 
@@ -77,10 +79,10 @@
                     <td>{{ $question->message_zg }}</td>
                     <td><a href="{{ action('AnswerController@index', $question->id) }}"
                            class="btn btn-outline-info">Sub Questions</a></td>
-                    <td><a href="{{ action('AnswerController@edit', [$questionId, $question->id]) }}"
+                    <td><a href="{{ action('AnswerController@edit', [$parentId, $question->id]) }}"
                            class="btn btn-outline-dark">Edit</a></td>
                     <td>
-                        <form action="{{ action('AnswerController@destroy', [$questionId, $question->id]) }}"
+                        <form action="{{ action('AnswerController@destroy', [$parentId, $question->id]) }}"
                               method="post">
 
                             {{ csrf_field() }}

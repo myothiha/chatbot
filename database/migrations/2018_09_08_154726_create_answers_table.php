@@ -17,27 +17,21 @@ class CreateAnswersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('question_id');
 
-            $table->unsignedInteger('type');
-            $table->string('traceAId')->default(null);
+            $table->string('traceAId')->nullable();
 
-            $table->text('button_mm3');
-            $table->longText('message_mm3');
+            $table->text('button_mm3')->nullable();
+            $table->longText('message_mm3')->nullable();
 
-            $table->text('button_zg');
-            $table->longText('message_zg');
+            $table->text('button_zg')->nullable();
+            $table->longText('message_zg')->nullable();
 
-            $table->text('button_en');
-            $table->longText('message_en');
+            $table->text('button_en')->nullable();
+            $table->longText('message_en')->nullable();
 
-            $table->text('image')->default(null);
+            $table->text('image')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
 
             $table->timestamps();
-
-            $table->foreign('question_id')
-                  ->references('id')->on('questions')
-                  ->onUpdate('cascade')
-                  ->onDelete('cascade');
         });
     }
 

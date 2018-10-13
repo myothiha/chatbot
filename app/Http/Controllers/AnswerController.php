@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answers\Answer;
+use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Services\Messenger\ApiConstant;
@@ -11,11 +12,11 @@ use Illuminate\Http\Request;
 class AnswerController extends Controller
 {
 
-    private $questionRepository;
+    private $answerRepository;
 
-    public function __construct(QuestionRepositoryInterface $questionRepository)
+    public function __construct(AnswerRepositoryInterface $answerRepository)
     {
-        $this->questionRepository = $questionRepository;
+        $this->answerRepository = $answerRepository;
     }
 
     /**
@@ -26,7 +27,7 @@ class AnswerController extends Controller
      */
     public function index($questionId = 0)
     {
-        $answers = Answer::find(['question_id' => $questionId]);
+        /*$answers = Answer::find(['question_id' => $questionId]);
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
         $question = $this->questionRepository->get($questionId);
@@ -36,8 +37,8 @@ class AnswerController extends Controller
             'question' => $question,
             'questionId' => $questionId,
             'types'     => ApiConstant::TYPES,
-            'answerType' => $answerType->type ?? null
-        ]);
+            'answerType' => $answerType->type ?? null,
+        ]);*/
     }
 
     /**
@@ -46,14 +47,11 @@ class AnswerController extends Controller
      * @param $questionId
      * @return \Illuminate\Http\Response
      */
-    public function create($questionId)
+    public function create($parentId)
     {
 
-        $question = $this->questionRepository->get($questionId);
-
         return view('admin.answers.create', [
-            'questionId'    => $questionId,
-            'question'      => $question,
+            'questionId'    => $parentId,
             'types'         => ApiConstant::TYPES,
         ]);
     }
@@ -64,9 +62,11 @@ class AnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $parentId)
     {
-        //
+        $this->answerRepository->create($request, $parentId);
+
+        return redirect("/questions/{$parentId}");
     }
 
     /**

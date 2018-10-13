@@ -2,6 +2,7 @@
 
 namespace App\Models\Questions\Repositories;
 
+use App\Models\Answers\Answer;
 use App\Models\Base\BaseRepository;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
@@ -29,7 +30,7 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
     function create(Request $request, $parentId)
     {
         if ($request->file('image')) {
-            $imagePath = ImageUploader::upload($request->image, 'uploads/', Question::IMAGE_SCALE);
+            $imagePath = ImageUploader::upload($request->image, 'uploads/', Answer::IMAGE_SCALE);
         } else {
             $imagePath = null;
         }

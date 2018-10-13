@@ -39,7 +39,7 @@ class AnswerTypeController extends Controller
         $answerType->type = $request->type;
         $answerType->answer_id = $questionId;
         $answerType->save();
-        return redirect('/answers/' . $questionId);
+        return redirect('/questions/' . $questionId);
     }
 
     /**

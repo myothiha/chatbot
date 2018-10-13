@@ -4,11 +4,17 @@ namespace App\Models\Questions;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Question
+ * @package App\Models\Questions
+ */
 class Question extends Model
 {
 
 
-
+    /**
+     * Image Upload Scale
+     */
     const IMAGE_SCALE = [
         'small' => [
             'width' => '300',
@@ -38,6 +44,7 @@ class Question extends Model
     {
         return $query->where('parent_id', $parentId);
     }
+
 
     public function getImageAttribute($value)
     {

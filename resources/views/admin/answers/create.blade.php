@@ -4,18 +4,16 @@
 
 @section('heading', 'Create Answer')
 
-@section('subheading',  "For " . ($question->message ?? "Top Question") )
-
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        <a>Questions</a>
+        <a>Answers</a>
     </li>
     <li class="breadcrumb-item">
         <a href="{{ action('AnswerController@index', $questionId) }}">List</a>
     </li>
     <li class="breadcrumb-item active">
-        <a href="{{ action('AnswerController@create', $questionId) }}">Create Question</a>
+        <a href="{{ action('AnswerController@create', $questionId) }}">Create Answer</a>
     </li>
 @endsection
 
@@ -27,16 +25,9 @@
         {{ csrf_field() }}
 
         <div class="form-group row">
-            <label for="type" class="col-sm-2 col-form-label">Trace Qid</label>
+            <label for="type" class="col-sm-2 col-form-label">Trace Aid</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="traceQid" name="traceQId" placeholder="Trace Qid">
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="type" class="col-sm-2 col-form-label">Trace Pid</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="tracePId" name="tracePId" placeholder="Trace Pid">
+                <input type="text" class="form-control" id="traceAId" name="traceAId" placeholder="Trace Aid">
             </div>
         </div>
 
