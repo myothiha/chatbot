@@ -83,24 +83,30 @@ class AnswerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param $questionId
+     * @param Answer $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($questionId, Answer $answer)
     {
-        //
+        return view('admin.answers.edit', [
+            'answer'  => $answer,
+            'questionId'  => $questionId,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param $questionId
+     * @param Answer $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $questionId, Answer $answer)
     {
-        //
+        $this->answerRepository->update($request, $questionId, $answer);
+        return redirect("/questions/{$questionId}");
     }
 
     /**

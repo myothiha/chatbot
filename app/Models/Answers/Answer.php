@@ -2,9 +2,9 @@
 
 namespace App\Models\Answers;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Base\BaseModel;
 
-class Answer extends Model
+class Answer extends BaseModel
 {
 
     const IMAGE_SCALE = [

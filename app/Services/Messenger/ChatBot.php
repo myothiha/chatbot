@@ -8,37 +8,45 @@
 
 namespace App\Services\Messenger;
 
+use App\Models\Answers\Answer;
+use App\Models\Questions\Question;
 use App\Network\HttpClient\GuzzleHttp;
 
 class ChatBot
 {
+
+    use ResponseHandlerTrait;
+
     private $client;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
     }
 
-    public function postBackButton($psid, $text, array $buttons)
+    public function replyAnswer(Answer $answers, $type)
     {
-        $data = [
-            "recipient" => [
-                "id" => $psid
-            ],
-            "message" => [
-                "attachment" => [
-                    "type"      => "template",
-                    "payload"   => [
-                        "template_type" => "button",
-                        "text"          => $text,
-                        "buttons"       => $buttons,
-                    ],
-                ],
-            ],
-        ];
+        switch ($type) {
+            case ApiConstant::TEXT :
+                $this->text($answers);
+                break;
+            case ApiConstant::QUICK_REPLY :
+                $this->quickReply($answers);
+                break;
+            case ApiConstant::BUTTON :
+                $this->button($answers);
+                break;
+            case ApiConstant::IMAGE :
+                $this->image($answers);
+                break;
+            case ApiConstant::GALLERY :
+                $this->gallery($answers);
+                break;
+        }
+    }
 
-        $this->client->request('POST', ApiConstant::MESSAGE, [
-           'query'  => ['access_token' => ApiConstant::ACCESS_TOKEN],
-            'json'  => $data,
-        ]);
+    public function replyQuestion(Question $questions, $questionType)
+    {
+
     }
 }

@@ -2,15 +2,14 @@
 
 namespace App\Models\Questions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Base\BaseModel;
 
 /**
  * Class Question
  * @package App\Models\Questions
  */
-class Question extends Model
+class Question extends BaseModel
 {
-
 
     /**
      * Image Upload Scale
@@ -46,47 +45,9 @@ class Question extends Model
     }
 
 
-    public function getImageAttribute($value)
+    /*public function getImageAttribute($value)
     {
-        return $value ?? "default.png";
-    }
-
-    /**
-     * @return string
-     */
-    public function getLargeImageAttribute()
-    {
-        return "/uploads/large/{$this->image}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getThumbnailAttribute()
-    {
-        return "/uploads/small/{$this->image}";
-    }
-
-    /**
-     *
-     */
-    public function deleteImages()
-    {
-//        dd($this->image);
-        if (file_exists(public_path() . $this->largeImage) AND isset($this->image) ) {
-            unlink(public_path() . $this->largeImage);
-            unlink(public_path() . $this->thumbnail);
-        }
-    }
-
-    /**
-     * @return bool|null
-     * @throws \Exception
-     */
-    public function delete()
-    {
-        $this->deleteImages();
-        return parent::delete();
-    }
+        return $value ?? $this->defaultImage;
+    }*/
 
 }

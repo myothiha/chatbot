@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\FbUser;
+use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
+use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
@@ -14,10 +17,14 @@ class ChatBotController extends Controller
     use RequestHandlerTrait;
 
     private $chatBot;
+    private $questionRepo;
+    private $answerRepo;
 
-    public function __construct(ChatBot $chatBot)
+    public function __construct(ChatBot $chatBot, QuestionRepositoryInterface $questionRepository, AnswerRepositoryInterface $answerRepository)
     {
         $this->chatBot = $chatBot;
+        $this->questionRepo = $questionRepository;
+        $this->answerRepo = $answerRepository;
     }
 
     public function verify(Request $request)
@@ -49,10 +56,15 @@ class ChatBotController extends Controller
         // Checks this is an event from a page subscription
         if ($request->object == 'page') {
 
-            if ( $payload = $this->getPayload($request) )
-            {
-                if( $payload == "start" ) {
-                    $this->askToChooseLanguage($senderId);
+            $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
+
+            if ($payload = $this->getPayload($request)) {
+                if ($payload == "start") {
+                    $this->askToChooseLanguage($fbUser);
+                } else if ($this->onSelectedLanguage($payload)) {
+                    $fbUser->language = $payload;
+                    $fbUser->save();
+                    $this->response();
                 } else {
 
                 }
@@ -63,26 +75,44 @@ class ChatBotController extends Controller
         }
     }
 
-    private function askToChooseLanguage($senderId) {
-
+    private function askToChooseLanguage(FbUser $fbUser)
+    {
         $buttons = [
             [
-                "type"      => "postback",
-                "title"     => "ျမန္မာ (ေဇာ္ဂ်ီ)",
-                "payload"   => ApiConstant::ZAWGYI,
+                "type" => "postback",
+                "title" => "ျမန္မာ (ေဇာ္ဂ်ီ)",
+                "payload" => ApiConstant::ZAWGYI,
             ],
             [
-                "type"      => "postback",
-                "title"     => "မြန်မာ (ယူနီကုဒ်)",
-                "payload"   => ApiConstant::MYANMAR3,
+                "type" => "postback",
+                "title" => "မြန်မာ (ယူနီကုဒ်)",
+                "payload" => ApiConstant::MYANMAR3,
             ],
             [
-                "type"      => "postback",
-                "title"     => "English",
-                "payload"   => ApiConstant::ENGLISH,
+                "type" => "postback",
+                "title" => "English",
+                "payload" => ApiConstant::ENGLISH,
             ],
         ];
 
-        $this->chatBot->postBackButton($senderId, "Choose Language.", $buttons);
+        $this->chatBot->postBackButton($fbUser->psid, "Choose Language.", $buttons);
+    }
+
+    private function onSelectedLanguage($lang)
+    {
+        return ($lang == ApiConstant::ZAWGYI || $lang == ApiConstant::MYANMAR3 || $lang == ApiConstant::ENGLISH);
+    }
+
+    private function response($questionId = 0)
+    {
+        $answers = $this->answerRepo->getAnswers($questionId);
+        $answerType = AnswerType::where('answer_id', $questionId)->first();
+
+        $this->replyAnswer($answers, $answerType);
+
+        $subQuestions = $this->questionRepo->getSubQuestions($questionId);
+        $questionType = QuestionType::where('question_id', $questionId)->first();
+
+        $this->replyQuestion($subQuestions, $questionType);
     }
 }

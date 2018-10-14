@@ -38,7 +38,7 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
 
         $answer = new Answer();
         $answer->question_id = $questionId;
-        $answer->traceAId = $request->traceQId;
+        $answer->traceAId = $request->traceAId;
         $answer->button_mm3 = $request->button_mm3;
         $answer->message_mm3 = $request->message_mm3;
         $answer->button_zg = $request->button_zg;
@@ -54,7 +54,25 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
 
     function update(Request $request, $questionId, Answer $answer)
     {
-        // TODO: Implement update() method.
+        if ($request->file('image')) {
+            $answer->deleteImages();
+            $imagePath = ImageUploader::upload($request->image, 'uploads/', Answer::IMAGE_SCALE);
+        } else {
+            $imagePath = $request->prev_image;
+        }
+
+        $answer->question_id = $questionId;
+        $answer->traceAId = $request->traceAId;
+        $answer->button_mm3 = $request->button_mm3;
+        $answer->message_mm3 = $request->message_mm3;
+        $answer->button_zg = $request->button_zg;
+        $answer->message_zg = $request->message_zg;
+        $answer->button_en = $request->button_en;
+        $answer->message_en = $request->message_en;
+        $answer->image = $imagePath;
+        $answer->status = $request->status;
+        $answer->save();
+        return $answer;
     }
 
     function delete(Answer $answer)

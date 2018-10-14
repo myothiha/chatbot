@@ -85,7 +85,6 @@ class QuestionController extends Controller
         return view('admin.questions.edit', [
             'question'  => $question,
             'parentId'  => $parentId,
-            'types'     => ApiConstant::TYPES,
         ]);
     }
 
