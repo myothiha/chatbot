@@ -8,6 +8,7 @@
 
 namespace App\Services\Messenger;
 
+use App\FbUser;
 use App\Models\Answers\Answer;
 use App\Models\Questions\Question;
 use App\Network\HttpClient\GuzzleHttp;
@@ -18,10 +19,16 @@ class ChatBot
     use ResponseHandlerTrait;
 
     private $client;
+    private $fbUser;
 
     public function __construct()
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
+    }
+
+    public function setFbUser(FbUser $fbUser)
+    {
+        $this->fbUser = $fbUser;
     }
 
     public function replyAnswer(Answer $answers, $type)

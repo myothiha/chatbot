@@ -29,10 +29,7 @@ trait ResponseHandlerTrait
             ],
         ];
 
-        $this->client->request('POST', ApiConstant::MESSAGE, [
-            'query'  => ['access_token' => ApiConstant::ACCESS_TOKEN],
-            'json'  => $data,
-        ]);
+        $this->sendRequest('POST', $data);
     }
 
     private function text($answers)
@@ -55,8 +52,31 @@ trait ResponseHandlerTrait
 
     }
 
-    private function gallery($answers)
+    private function gallery($messages)
     {
+        $data = [
+            "recipient" => [
+                "id" => $this->fbUser->psid,
+            ],
+            "message" => [
+                "attachment" => [
+                    "type"      => "template",
+                    "payload"   => [
+                        "template_type" => "generic",
+                        "elements" => $messages,
+                    ],
+                ],
+            ],
+        ];
 
+        $this->sendRequest('POST', $data);
+    }
+
+    private function sendRequest($requestType, $data)
+    {
+        $this->client->request($requestType, ApiConstant::MESSAGE, [
+            'query'  => ['access_token' => ApiConstant::ACCESS_TOKEN],
+            'json'  => $data,
+        ]);
     }
 }

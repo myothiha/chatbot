@@ -9,7 +9,7 @@
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
     <li class="breadcrumb-item">
-        Index</a>
+        Index
     </li>
     <li class="breadcrumb-item active">
         <a href="{{ action('QuestionController@index', $parentId) }}">List</a>
@@ -19,6 +19,7 @@
 @section('content')
 
     <!-- Content Section -->
+
 
     <!-- Question Create Button -->
     <div class="row">
@@ -168,7 +169,7 @@
 
                             {{ csrf_field() }}
 
-                            <input type="hidden" name="_method" value="DELETE"/>
+                            <input type="hidden" name="_method" value="DELETE" />
 
                             <input type="submit" class="btn btn-outline-danger" name="btnSubmit" value="Delete"/>
                         </form>

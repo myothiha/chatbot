@@ -32,6 +32,30 @@ class QuestionController extends Controller
         $questionType = QuestionType::where('question_id', $parentId)->first();
 
         $answers = Answer::where('question_id', $parentId)->get();
+
+        $response = collect([]);
+
+
+        foreach($questions as $question)
+        {
+            $data = [
+                "title"     => $question->message_zg,
+                "image_url" => $question->image,
+                "subtitle"  => "",
+                "buttons"   => [
+                    [
+                        "type"      => "postback",
+                        "title"     => $question->button_zg,
+                        "payload"   => $question->id
+                    ]
+                ]
+            ];
+
+            $response->push($data);
+        }
+
+        dd($response->toArray());
+
         $answerType = AnswerType::where('answer_id', $parentId)->first();
 
         return view('admin.questions.index', [

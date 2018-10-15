@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\FbUser;
+use App\Models\Answers\Answer;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
+use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
+use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
@@ -57,6 +60,7 @@ class ChatBotController extends Controller
         if ($request->object == 'page') {
 
             $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
+            $this->chatBot->setFbUser($fbUser);
 
             if ($payload = $this->getPayload($request)) {
                 if ($payload == "start") {
@@ -108,11 +112,17 @@ class ChatBotController extends Controller
         $answers = $this->answerRepo->getAnswers($questionId);
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
-        $this->replyAnswer($answers, $answerType);
+        $responseAnswer = $this->prepareAnswer($answers);
+        $this->chatBot->replyAnswer($answers, $answerType);
 
         $subQuestions = $this->questionRepo->getSubQuestions($questionId);
         $questionType = QuestionType::where('question_id', $questionId)->first();
 
-        $this->replyQuestion($subQuestions, $questionType);
+        $this->chatBot->replyQuestion($subQuestions, $questionType);
+    }
+
+    private function prepareAnswer(Answer $answers)
+    {
+
     }
 }
