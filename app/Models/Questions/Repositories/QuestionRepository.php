@@ -3,13 +3,13 @@
 namespace App\Models\Questions\Repositories;
 
 use App\Models\Answers\Answer;
-use App\Models\Base\BaseRepository;
+use App\Models\Messenger\MessengerApi;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
 use App\Utils\Uploaders\ImageUploader;
 use Illuminate\Http\Request;
 
-class QuestionRepository extends BaseRepository implements QuestionRepositoryInterface
+class QuestionRepository extends MessengerApi implements QuestionRepositoryInterface
 {
 
     public function __construct(Question $question)
@@ -74,6 +74,13 @@ class QuestionRepository extends BaseRepository implements QuestionRepositoryInt
         $question->save();
 //        dd($question->toArray()); Todo remove
         return $question;
+    }
+
+    public function prepare($questionId, $type, $lang)
+    {
+        $subQuestions = $this->getSubQuestions($questionId);
+
+        return $this->transform($subQuestions, $type, $lang);
     }
 
     function delete(Question $question)

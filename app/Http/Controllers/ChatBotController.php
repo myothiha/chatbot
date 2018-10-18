@@ -7,11 +7,14 @@ use App\Models\Answers\Answer;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
+use App\Models\Questions\Question;
 use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class ChatBotController extends Controller
@@ -68,7 +71,7 @@ class ChatBotController extends Controller
                 } else if ($this->onSelectedLanguage($payload)) {
                     $fbUser->language = $payload;
                     $fbUser->save();
-                    $this->response();
+                    $this->response($fbUser->language);
                 } else {
 
                 }
@@ -107,22 +110,21 @@ class ChatBotController extends Controller
         return ($lang == ApiConstant::ZAWGYI || $lang == ApiConstant::MYANMAR3 || $lang == ApiConstant::ENGLISH);
     }
 
-    private function response($questionId = 0)
+    public function response($lang, $questionId = 0)
     {
+        $fbUser = FbUser::firstOrNew(['psid' => 123123112312]);
+        $this->chatBot->setFbUser($fbUser);
         $answers = $this->answerRepo->getAnswers($questionId);
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
-        $responseAnswer = $this->prepareAnswer($answers);
-        $this->chatBot->replyAnswer($answers, $answerType);
+        $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
+        $this->chatBot->reply($answers->toArray(), $answerType->type);
 
-        $subQuestions = $this->questionRepo->getSubQuestions($questionId);
+        dd($answers);
+
         $questionType = QuestionType::where('question_id', $questionId)->first();
 
-        $this->chatBot->replyQuestion($subQuestions, $questionType);
-    }
-
-    private function prepareAnswer(Answer $answers)
-    {
-
+        $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
+        $this->chatBot->reply($questions->toArray(), $questionType->type);
     }
 }

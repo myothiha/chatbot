@@ -39,3 +39,5 @@ Route::delete('/answers/{questionId}/delete/{answer}',    'AnswerController@dest
 Route::post('/answerTypes/{questionId}', 'AnswerTypeController@store');
 
 //Route::resource('answersDetail', 'AnswerDetailController');
+
+Route::get('/test/{lang}/', 'ChatBotController@response');

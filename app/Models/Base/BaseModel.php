@@ -8,8 +8,8 @@
 
 namespace App\Models\Base;
 
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Request;
 
 abstract class BaseModel extends Model
 {
@@ -24,6 +24,16 @@ abstract class BaseModel extends Model
     protected function setDefaultImageAttribute($value)
     {
         $this->defaultImage = $value;
+    }
+
+    public function  getApiImageSmallAttribute()
+    {
+        return Request::root() . $this->thumbnail;
+    }
+
+    public function  getApiImageLargeAttribute()
+    {
+        return Request::root() . $this->largeImage;
     }
 
     /**

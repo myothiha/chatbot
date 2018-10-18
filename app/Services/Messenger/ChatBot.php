@@ -31,29 +31,24 @@ class ChatBot
         $this->fbUser = $fbUser;
     }
 
-    public function replyAnswer(Answer $answers, $type)
+    public function reply(Array $message, $type)
     {
         switch ($type) {
             case ApiConstant::TEXT :
-                $this->text($answers);
+                $this->text($message);
                 break;
             case ApiConstant::QUICK_REPLY :
-                $this->quickReply($answers);
+                $this->quickReply($message);
                 break;
             case ApiConstant::BUTTON :
-                $this->button($answers);
+                $this->button($message);
                 break;
             case ApiConstant::IMAGE :
-                $this->image($answers);
+                $this->image($message);
                 break;
             case ApiConstant::GALLERY :
-                $this->gallery($answers);
+                $this->gallery($message);
                 break;
         }
-    }
-
-    public function replyQuestion(Question $questions, $questionType)
-    {
-
     }
 }

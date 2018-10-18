@@ -8,14 +8,13 @@
 
 namespace App\Models\Answers\Repositories;
 
-
 use App\Models\Answers\Answer;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
-use App\Models\Base\BaseRepository;
+use App\Models\Messenger\MessengerApi;
 use App\Utils\Uploaders\ImageUploader;
 use Illuminate\Http\Request;
 
-class AnswerRepository extends BaseRepository implements AnswerRepositoryInterface
+class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
 {
 
     public function __construct(Answer $answer)
@@ -25,7 +24,7 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
 
     function getAnswers($questionId)
     {
-        return $this->model->find(['question_id' => $questionId]);
+        return $this->model->where(['question_id' => $questionId])->get();
     }
 
     function create(Request $request, $questionId)
@@ -78,5 +77,11 @@ class AnswerRepository extends BaseRepository implements AnswerRepositoryInterfa
     function delete(Answer $answer)
     {
         // TODO: Implement delete() method.
+    }
+
+    public function prepare($questionId, $type, $lang)
+    {
+        $answers = $this->getAnswers($questionId);
+        return $this->transform($answers, $type, $lang);
     }
 }

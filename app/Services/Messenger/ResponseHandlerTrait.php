@@ -32,14 +32,36 @@ trait ResponseHandlerTrait
         $this->sendRequest('POST', $data);
     }
 
-    private function text($answers)
+    private function text($messages)
     {
+        foreach ($messages as $message)
+        {
+            $data = [
+                "recipient" => [
+                    "id" => $this->fbUser->psid,
+                ],
+                "message" => [
+                    "text" => $message
+                ],
+            ];
 
+            $this->sendRequest('POST', $data);
+        }
     }
 
-    private function quickReply($answers)
+    private function quickReply($messages)
     {
+        $data = [
+            "recipient" => [
+                "id" => $this->fbUser->psid,
+            ],
+            "message" => [
+                "text" => "",
+                "quick_replies" => $messages
+            ],
+        ];
 
+        $this->sendRequest('POST', $data);
     }
 
     private function button($answers)
@@ -47,7 +69,7 @@ trait ResponseHandlerTrait
 
     }
 
-    private function image($answers)
+    private function image($message)
     {
 
     }
