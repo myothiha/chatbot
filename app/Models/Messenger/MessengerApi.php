@@ -23,7 +23,7 @@ abstract class MessengerApi extends BaseRepository
                 $function = "text";
                 break;
             case ApiConstant::QUICK_REPLY :
-                $function = "quckReply";
+                $function = "quickReply";
                 break;
             case ApiConstant::BUTTON :
                 $function = "button";
@@ -35,7 +35,7 @@ abstract class MessengerApi extends BaseRepository
                 $function = "gallery";
                 break;
             default:
-                $function = "gallery";
+                $function = "text";
                 break;
         }
 
@@ -50,14 +50,38 @@ abstract class MessengerApi extends BaseRepository
 
     public function text(MessengerApiInterface $messengerApi, $lang)
     {
+        return $messengerApi->message($lang);
+    }
 
+    public function quickReply(MessengerApiInterface $messengerApi, $lang)
+    {
+        return [
+            "content_type"  => "text",
+            "title"         => $messengerApi->message($lang),
+            "payload"       => $messengerApi->id,
+            "image_url"     => $messengerApi->apiImageSmall,
+        ];
+    }
+
+    public function postbackButton(MessengerApiInterface $messengerApi, $lang)
+    {
+        return [
+            "type" => "postback",
+            "title" => "English",
+            "payload" => ApiConstant::ENGLISH,
+        ];
+    }
+
+    public function image(MessengerApiInterface $messengerApi, $lang)
+    {
+        return $messengerApi->apiImageLarge;
     }
 
     public function gallery(MessengerApiInterface $messengerApi, $lang)
     {
         return [
             "title" => $messengerApi->message($lang),
-            "image_url" => $messengerApi->image(),
+            "image_url" => $messengerApi->apiImageSmall,
             "subtitle" => "",
             "buttons" => [
                 [

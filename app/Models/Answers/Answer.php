@@ -56,9 +56,4 @@ class Answer extends BaseModel implements MessengerApiInterface
                 break;
         }
     }
-
-    function image()
-    {
-        return $this->getApiImageLargeAttribute();
-    }
 }

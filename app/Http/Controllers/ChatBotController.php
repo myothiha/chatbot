@@ -73,7 +73,7 @@ class ChatBotController extends Controller
                     $fbUser->save();
                     $this->response($fbUser->language);
                 } else {
-
+                    $this->response($fbUser->language, $payload);
                 }
             }
 
@@ -102,7 +102,7 @@ class ChatBotController extends Controller
             ],
         ];
 
-        $this->chatBot->postBackButton($fbUser->psid, "Choose Language.", $buttons);
+        $this->chatBot->postBackButton($buttons, "Choose Language.");
     }
 
     private function onSelectedLanguage($lang)
@@ -112,19 +112,19 @@ class ChatBotController extends Controller
 
     public function response($lang, $questionId = 0)
     {
-        $fbUser = FbUser::firstOrNew(['psid' => 123123112312]);
-        $this->chatBot->setFbUser($fbUser);
-        $answers = $this->answerRepo->getAnswers($questionId);
+//        $fbUser = FbUser::firstOrNew(['psid' => 123123112312]);
+//        $this->chatBot->setFbUser($fbUser);
+
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
         $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
         $this->chatBot->reply($answers->toArray(), $answerType->type);
-
-        dd($answers);
 
         $questionType = QuestionType::where('question_id', $questionId)->first();
 
         $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
         $this->chatBot->reply($questions->toArray(), $questionType->type);
     }
+
+
 }

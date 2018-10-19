@@ -11,18 +11,30 @@ namespace App\Services\Messenger;
 
 trait ResponseHandlerTrait
 {
-    public function postBackButton($psid, $text, array $buttons)
+
+    public $defaultText = [
+        ApiConstant::MYANMAR3   => "ရွေးချယ်ပါ",
+        ApiConstant::ZAWGYI     => "ေရြးခ်ယ္ပါ",
+        ApiConstant::ENGLISH    => "Choose",
+    ];
+
+    public function getDefaultText()
+    {
+        return $this->defaultText[$this->fbUser->language];
+    }
+
+    public function postBackButton(array $buttons, $text = null)
     {
         $data = [
             "recipient" => [
-                "id" => $psid
+                "id" => $this->fbUser->psid
             ],
             "message" => [
                 "attachment" => [
                     "type"      => "template",
                     "payload"   => [
                         "template_type" => "button",
-                        "text"          => $text,
+                        "text"          => $text ?? $this->getDefaultText(),
                         "buttons"       => $buttons,
                     ],
                 ],
@@ -49,29 +61,41 @@ trait ResponseHandlerTrait
         }
     }
 
-    private function quickReply($messages)
+    private function quickReply($messages, $text = null)
     {
         $data = [
             "recipient" => [
                 "id" => $this->fbUser->psid,
             ],
             "message" => [
-                "text" => "",
-                "quick_replies" => $messages
+                "text" => $text ?? $this->getDefaultText(),
+                "quick_replies" => $messages,
             ],
         ];
 
         $this->sendRequest('POST', $data);
     }
 
-    private function button($answers)
+    private function image($messages)
     {
+        foreach($messages as $message) {
+            $data = [
+                "recipient" => [
+                    "id" => $this->fbUser->psid,
+                ],
+                "message" => [
+                    "attachment" => [
+                        "type"      => "image",
+                        "payload"   => [
+                            "url"           => $message,
+                            "is_reusable"   => true
+                        ],
+                    ],
+                ],
+            ];
 
-    }
-
-    private function image($message)
-    {
-
+            $this->sendRequest('POST', $data);
+        }
     }
 
     private function gallery($messages)
