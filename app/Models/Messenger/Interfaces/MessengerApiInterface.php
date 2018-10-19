@@ -13,5 +13,6 @@ interface MessengerApiInterface
 {
     function message($lang);
     function button($lang);
-    function image();
+    function apiImageLarge();
+    function apiImageSmall();
 }

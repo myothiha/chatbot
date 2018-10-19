@@ -26,12 +26,12 @@ abstract class BaseModel extends Model
         $this->defaultImage = $value;
     }
 
-    public function  getApiImageSmallAttribute()
+    public function  apiImageSmall()
     {
         return Request::root() . $this->thumbnail;
     }
 
-    public function  getApiImageLargeAttribute()
+    public function  apiImageLarge()
     {
         return Request::root() . $this->largeImage;
     }

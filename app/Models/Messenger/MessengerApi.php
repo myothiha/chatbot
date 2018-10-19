@@ -59,7 +59,7 @@ abstract class MessengerApi extends BaseRepository
             "content_type"  => "text",
             "title"         => $messengerApi->message($lang),
             "payload"       => $messengerApi->id,
-            "image_url"     => $messengerApi->apiImageSmall,
+            "image_url"     => $messengerApi->apiImageSmall(),
         ];
     }
 
@@ -74,14 +74,14 @@ abstract class MessengerApi extends BaseRepository
 
     public function image(MessengerApiInterface $messengerApi, $lang)
     {
-        return $messengerApi->apiImageLarge;
+        return $messengerApi->apiImageLarge();
     }
 
     public function gallery(MessengerApiInterface $messengerApi, $lang)
     {
         return [
             "title" => $messengerApi->message($lang),
-            "image_url" => $messengerApi->apiImageSmall,
+            "image_url" => $messengerApi->apiImageSmall(),
             "subtitle" => "",
             "buttons" => [
                 [
