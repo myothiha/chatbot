@@ -29,7 +29,7 @@ abstract class MessengerApi extends BaseRepository
                 $function = "button";
                 break;
             case ApiConstant::IMAGE :
-                $function = "image";
+                $function = "textAndImage";
                 break;
             case ApiConstant::GALLERY :
                 $function = "gallery";
@@ -46,6 +46,14 @@ abstract class MessengerApi extends BaseRepository
         });
 
         return $response;
+    }
+
+    public function textAndImage(MessengerApiInterface $messengerApi, $lang)
+    {
+        return [
+            "text"     => $messengerApi->message($lang),
+            "image"    => $messengerApi->apiImageLarge(),
+        ];
     }
 
     public function text(MessengerApiInterface $messengerApi, $lang)

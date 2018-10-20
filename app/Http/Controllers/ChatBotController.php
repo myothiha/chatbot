@@ -51,7 +51,7 @@ class ChatBotController extends Controller
 
     public function handle(Request $request)
     {
-        Log::debug($request->all());
+//        Log::debug($request->all());
 
         $senderId = $this->getSenderId($request);
 
@@ -61,7 +61,7 @@ class ChatBotController extends Controller
             $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
             $this->chatBot->setFbUser($fbUser);
 
-            if ($payload = $this->getPayload($request) || $this->quickReplyPayload($request)) {
+            if ($payload = $this->getPayload($request)) {
                 if ($payload == "start") {
                     $this->askToChooseLanguage($fbUser);
                 } else if ($this->onSelectedLanguage($payload)) {
@@ -118,8 +118,11 @@ class ChatBotController extends Controller
 
         $questionType = QuestionType::where('question_id', $questionId)->first();
 
-        $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
-        $this->chatBot->reply($questions->toArray(), $questionType->type);
+        if($questionType)
+        {
+            $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
+            $this->chatBot->reply($questions->toArray(), $questionType->type);
+        }
     }
 
 

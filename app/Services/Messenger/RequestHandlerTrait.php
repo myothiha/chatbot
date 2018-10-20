@@ -25,14 +25,19 @@ trait RequestHandlerTrait
         return $request['entry'][0]["messaging"][0]["message"] ?? false;
     }
 
-    private function getPayload(Request $request)
+    private function getPayLoad(Request $request)
     {
-        return $request['entry'][0]['messaging'][0]['postback']['payload'] ?? false;
+        return ($this->getPostbackPayload($request) ?? $this->quickReplyPayload($request)) ?? false;
+    }
+
+    private function getPostbackPayload(Request $request)
+    {
+        return $request['entry'][0]['messaging'][0]['postback']['payload'] ?? null;
     }
 
     private function quickReplyPayload(Request $request)
     {
-        return $request['entry'][0]['messaging'][0]['message']['quick_reply']['payload'] ?? false;
+        return $request['entry'][0]['messaging'][0]['message']['quick_reply']['payload'] ?? null;
     }
 
     private function getSenderId(Request $request)

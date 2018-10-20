@@ -79,7 +79,7 @@ trait ResponseHandlerTrait
     private function image($messages)
     {
         foreach($messages as $message) {
-            $data = [
+            $image = [
                 "recipient" => [
                     "id" => $this->fbUser->psid,
                 ],
@@ -87,14 +87,25 @@ trait ResponseHandlerTrait
                     "attachment" => [
                         "type"      => "image",
                         "payload"   => [
-                            "url"           => $message,
-                            "is_reusable"   => true
+                            "url"           => $message["image"],
+                            "is_reusable"   => true,
                         ],
                     ],
                 ],
             ];
 
-            $this->sendRequest('POST', $data);
+            $this->sendRequest('POST', $image);
+
+            $text = [
+                "recipient" => [
+                    "id" => $this->fbUser->psid,
+                ],
+                "message" => [
+                    "text" => $message["text"],
+                ],
+            ];
+
+            $this->sendRequest('POST', $text);
         }
     }
 
