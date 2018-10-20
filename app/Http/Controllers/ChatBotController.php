@@ -3,18 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\FbUser;
-use App\Models\Answers\Answer;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
-use App\Models\Questions\Question;
 use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class ChatBotController extends Controller

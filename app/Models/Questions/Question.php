@@ -27,6 +27,22 @@ class Question extends BaseModel implements MessengerApiInterface
         ],
     ];
 
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\Questions\Question', 'parent_id');
+    }
+
+    public function getParentList()
+    {
+        $collection = collect([]);
+        $question = $this;
+        while ($question) {
+            $collection->push($question);
+            $question = $question->parent;
+        }
+        return $collection;
+    }
+
     /**
      * @param $query
      * @return mixed
@@ -54,8 +70,7 @@ class Question extends BaseModel implements MessengerApiInterface
 
     function message($lang)
     {
-        switch ($lang)
-        {
+        switch ($lang) {
             case ApiConstant::MYANMAR3 :
                 return $this->message_mm3;
                 break;
@@ -70,16 +85,15 @@ class Question extends BaseModel implements MessengerApiInterface
 
     function button($lang)
     {
-        switch ($lang)
-        {
+        switch ($lang) {
             case ApiConstant::MYANMAR3 :
-                return $this->message_mm3;
+                return $this->button_mm3;
                 break;
             case ApiConstant::ZAWGYI :
-                return $this->message_zg;
+                return $this->button_zg;
                 break;
             case ApiConstant::ENGLISH :
-                return $this->message_en;
+                return $this->button_en;
                 break;
         }
     }

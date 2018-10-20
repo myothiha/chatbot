@@ -9,6 +9,8 @@
 namespace App\Services\Messenger;
 
 
+use Illuminate\Http\Request;
+
 trait RequestHandlerTrait
 {
 

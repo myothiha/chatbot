@@ -115,8 +115,9 @@ class AnswerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($questionId, Answer $answer)
     {
-        //
+        $this->answerRepository->delete($answer);
+        return redirect("/questions/{$questionId}");
     }
 }

@@ -51,7 +51,7 @@
         <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Message (Myanmar 3)</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="message_mm3" name="message_mm3"
+                <textarea class="form-control" id="message_mm3" rows="10" name="message_mm3"
                           placeholder="Message want to display"></textarea>
             </div>
         </div>
@@ -67,7 +67,7 @@
         <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Message (Zawgyi)</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="message_zg" name="message_zg"
+                <textarea class="form-control" id="message_zg" rows="10" name="message_zg"
                           placeholder="Message want to display"></textarea>
             </div>
         </div>
@@ -83,7 +83,7 @@
         <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Message (English)</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="message_en" name="message_en"
+                <textarea class="form-control" id="message_en" rows="10" name="message_en"
                           placeholder="Message want to display"></textarea>
             </div>
         </div>

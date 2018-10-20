@@ -22,7 +22,7 @@ class Answer extends BaseModel implements MessengerApiInterface
 
     public function question()
     {
-        return $this->belongsTo('App\Question', 'question_id');
+        return $this->belongsTo('App\Models\Questions\Question', 'question_id');
     }
 
     function message($lang)

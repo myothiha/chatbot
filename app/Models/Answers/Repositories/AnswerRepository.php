@@ -76,7 +76,7 @@ class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
 
     function delete(Answer $answer)
     {
-        // TODO: Implement delete() method.
+        return $answer->delete();
     }
 
     public function prepare($questionId, $type, $lang)

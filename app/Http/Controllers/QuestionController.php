@@ -35,11 +35,12 @@ class QuestionController extends Controller
 
         $answerType = AnswerType::where('answer_id', $parentId)->first();
 
+        $parentQuestion = Question::find($parentId);
 
-
-//        dd($response);
+        $parentQuestions = $parentQuestion ? $parentQuestion->getParentList()->reverse() : collect();
 
         return view('admin.questions.index', [
+            'parentQuestions' => $parentQuestions,
             'questions' => $questions,
             'answers' => $answers,
             'parentId'  => $parentId,

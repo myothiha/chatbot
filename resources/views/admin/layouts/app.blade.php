@@ -10,6 +10,9 @@
 
     <title>Miss Migration - @yield('title')</title>
 
+    <!-- Custom Style -->
+    <link href="/css/style.css" rel="stylesheet">
+
     <!-- Bootstrap core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
