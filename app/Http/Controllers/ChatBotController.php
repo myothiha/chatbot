@@ -63,6 +63,7 @@ class ChatBotController extends Controller
 
             if ($payload = $this->getPayload($request)) {
                 if ($payload == "start") {
+                    $this->chatBot->greetUser();
                     $this->askToChooseLanguage($fbUser);
                 } else if ($this->onSelectedLanguage($payload)) {
                     $fbUser->language = $payload;
@@ -108,9 +109,6 @@ class ChatBotController extends Controller
 
     public function response($lang, $questionId = 0)
     {
-//        $fbUser = FbUser::firstOrNew(['psid' => 123123112312]);
-//        $this->chatBot->setFbUser($fbUser);
-
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
         $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);

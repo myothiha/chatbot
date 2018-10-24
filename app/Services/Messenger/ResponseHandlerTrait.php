@@ -9,6 +9,8 @@
 namespace App\Services\Messenger;
 
 
+use App\FbUser;
+
 trait ResponseHandlerTrait
 {
 
@@ -21,6 +23,18 @@ trait ResponseHandlerTrait
     public function getDefaultText()
     {
         return $this->defaultText[$this->fbUser->language];
+    }
+
+    public function getProfile()
+    {
+        $profile = $this->client->request("GET", "/{$this->fbUser->psid}", [
+            'query'  => [
+                'fields'        => 'first_name,last_name,profile_pic',
+                'access_token'  => ApiConstant::ACCESS_TOKEN,
+            ],
+        ]);
+
+        $this->fbUser->saveProfileData($profile);
     }
 
     public function postBackButton(array $buttons, $text = null)
@@ -132,7 +146,9 @@ trait ResponseHandlerTrait
     private function sendRequest($requestType, $data)
     {
         $this->client->request($requestType, ApiConstant::MESSAGE, [
-            'query'  => ['access_token' => ApiConstant::ACCESS_TOKEN],
+            'query'  => [
+                'access_token' => ApiConstant::ACCESS_TOKEN,
+            ],
             'json'  => $data,
         ]);
     }
