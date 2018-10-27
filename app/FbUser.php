@@ -15,12 +15,12 @@ class FbUser extends Model
 
     public function saveProfileData($profile)
     {
-        $this->firstName    = $profile['first_name'];
-        $this->lastName     = $profile['last_name'];
-        $this->profilePic   = $profile['profile_pic'];
-        $this->locale       = $profile['locale'];
-        $this->timezone     = $profile['timezone'];
-        $this->gender       = $profile['gender'];
+        $this->firstName    = $profile->first_name;
+        $this->lastName     = $profile->last_name;
+        $this->profilePic   = $profile->profile_pic;
+        $this->locale       = $profile->locale;
+        $this->timezone     = $profile->timezone;
+        $this->gender       = $profile->gender;
 
         $this->save();
     }

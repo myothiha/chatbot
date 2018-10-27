@@ -11,5 +11,5 @@ namespace App\Network\HttpClient;
 
 interface HttpClientInterface
 {
-
+    function request($method, $uri, $param);
 }

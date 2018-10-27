@@ -9,8 +9,6 @@
 namespace App\Services\Messenger;
 
 use App\FbUser;
-use App\Models\Answers\Answer;
-use App\Models\Questions\Question;
 use App\Network\HttpClient\GuzzleHttp;
 
 class ChatBot
@@ -31,7 +29,6 @@ class ChatBot
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
     }
-
 
 
     public function getGreetingText()

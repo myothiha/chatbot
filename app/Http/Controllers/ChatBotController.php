@@ -123,5 +123,9 @@ class ChatBotController extends Controller
         }
     }
 
-
+    public function test()
+    {
+        $fbUser = FbUser::firstOrNew(['psid' => '2085756598147281']);
+        $this->chatBot->setFbUser($fbUser);
+    }
 }

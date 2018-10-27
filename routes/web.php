@@ -40,4 +40,4 @@ Route::post('/answerTypes/{questionId}', 'AnswerTypeController@store');
 
 //Route::resource('answersDetail', 'AnswerDetailController');
 
-Route::get('/test/{lang}/', 'ChatBotController@response');
+Route::get('/test/', 'ChatBotController@test');

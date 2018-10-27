@@ -27,14 +27,15 @@ trait ResponseHandlerTrait
 
     public function getProfile()
     {
+//        dd($this->fbUser->psid);
         $profile = $this->client->request("GET", "/{$this->fbUser->psid}", [
             'query'  => [
                 'fields'        => 'first_name,last_name,profile_pic',
                 'access_token'  => ApiConstant::ACCESS_TOKEN,
             ],
         ]);
-
-        $this->fbUser->saveProfileData($profile);
+//        dd($this->client);
+        $this->fbUser->saveProfileData(json_decode($profile));
     }
 
     public function postBackButton(array $buttons, $text = null)
