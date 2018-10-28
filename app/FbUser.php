@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\Messenger\ApiConstant;
 use Illuminate\Database\Eloquent\Model;
 
 class FbUser extends Model
@@ -24,4 +25,16 @@ class FbUser extends Model
 
         $this->save();
     }
+
+    public function conversationMode($mode)
+    {
+        $this->conversation = $mode;
+        $this->save();
+    }
+
+    public function isConversationOn()
+    {
+        return $this->conversation == ApiConstant::CONVERSATION_ON;
+    }
+
 }

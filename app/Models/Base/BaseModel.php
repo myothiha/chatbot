@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Request;
 abstract class BaseModel extends Model
 {
 
+    const VISIBILITY_TRUE = 1;
+
+    const VISIBILITY_FALSE = 0;
+
     private $defaultImage = "default.png";
 
     protected function getDefaultImageAttribute()
@@ -72,5 +76,15 @@ abstract class BaseModel extends Model
     {
         $this->deleteImages();
         return parent::delete();
+    }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('status', self::VISIBILITY_TRUE);
+    }
+
+    public function scopeSearchMessage($query, $keyword, $column)
+    {
+        return $query->where($column, 'like', "%{$keyword}%");
     }
 }

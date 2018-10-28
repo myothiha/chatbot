@@ -62,7 +62,6 @@ class Question extends BaseModel implements MessengerApiInterface
         return $query->where('parent_id', $parentId);
     }
 
-
     /*public function getImageAttribute($value)
     {
         return $value ?? $this->defaultImage;
@@ -72,13 +71,13 @@ class Question extends BaseModel implements MessengerApiInterface
     {
         switch ($lang) {
             case ApiConstant::MYANMAR3 :
-                return $this->message_mm3;
+                return $this->message_mm3 ?? "";
                 break;
             case ApiConstant::ZAWGYI :
-                return $this->message_zg;
+                return $this->message_zg ?? "";
                 break;
             case ApiConstant::ENGLISH :
-                return $this->message_en;
+                return $this->message_en ?? "";
                 break;
         }
     }
@@ -87,13 +86,13 @@ class Question extends BaseModel implements MessengerApiInterface
     {
         switch ($lang) {
             case ApiConstant::MYANMAR3 :
-                return $this->button_mm3;
+                return $this->button_mm3 ?? "";
                 break;
             case ApiConstant::ZAWGYI :
-                return $this->button_zg;
+                return $this->button_zg ?? "";
                 break;
             case ApiConstant::ENGLISH :
-                return $this->button_en;
+                return $this->button_en ?? "";
                 break;
         }
     }

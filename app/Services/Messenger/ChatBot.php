@@ -25,11 +25,16 @@ class ChatBot
         ApiConstant::ENGLISH    => "Hi %username. Welcome to Miss Migration. Please select your questions."
     ];
 
+    public $askUserInput = [
+        ApiConstant::MYANMAR3   => "မေးမြန်းလိုသော အကြောင်းအရာအား အပြည့်အစုံ ရေးသားပေးပါ",
+        ApiConstant::ZAWGYI     => "ေမးျမန္းလိုေသာ အေၾကာင္းအရာအား အျပည့္အစုံ ေရးသားေပးပါ",
+        ApiConstant::ENGLISH    => "Ask your question now."
+    ];
+
     public function __construct()
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
     }
-
 
     public function getGreetingText()
     {
@@ -37,10 +42,20 @@ class ChatBot
         return str_replace("%username", $this->fbUser->name, $text);
     }
 
+    public function getUserInputText()
+    {
+        return $this->askUserInput[$this->fbUser->language];
+    }
+
     public function setFbUser(FbUser $fbUser)
     {
         $this->fbUser = $fbUser;
         $this->getProfile();
+    }
+
+    public function getFbUser()
+    {
+        return $this->fbUser;
     }
 
     public function reply(Array $message, $type, $text=null)
@@ -68,4 +83,29 @@ class ChatBot
     {
         $this->text([$this->getGreetingText()]);
     }
+
+    public function askUserToInputQuestion()
+    {
+        $this->text([$this->getUserInputText()]);
+    }
+
+    public function askManually()
+    {
+        $buttons = [
+            [
+                "type" => "postback",
+                "title" => "Yes",
+                "payload" => "yes",
+            ],
+            [
+                "type" => "postback",
+                "title" => "No",
+                "payload" => "no",
+            ],
+        ];
+
+        $this->postBackButton($buttons, "Do you Want to ask admin manually ? ");
+    }
+
+
 }

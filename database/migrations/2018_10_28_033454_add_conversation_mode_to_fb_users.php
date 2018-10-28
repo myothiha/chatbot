@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFbUsersTable extends Migration
+class AddConversationModeToFbUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateFbUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('fb_users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('psid', 1000);
-            $table->string('language')->default(\App\Services\Messenger\ApiConstant::ZAWGYI);
-            $table->timestamps();
+        Schema::table('fb_users', function (Blueprint $table) {
+            $table->tinyInteger('conversation')->default(0);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateFbUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fb_users');
+        Schema::table('fb_users', function (Blueprint $table) {
+            $table->dropColumn('conversation');
+        });
     }
 }

@@ -69,9 +69,42 @@ class ChatBotController extends Controller
                     $fbUser->language = $payload;
                     $fbUser->save();
                     $this->response($fbUser->language);
+                } else if ($this->isManuallyAsk($payload)) {
+                    // Todo ask manually
+                    // 1 Open Conversation Mode
+                    $fbUser->conversationMode(ApiConstant::CONVERSATION_ON);
+                    // 2 Ask User to input his request.
+                    $this->chatBot->askUserToInputQuestion();
+                } else if (!$this->isManuallyAsk($payload)) {
+                    // 1 reply something if user didn't choose to ask manually
                 } else {
                     $this->response($fbUser->language, $payload);
                 }
+            } else if ($message = $this->getTextMessage($request)) {
+
+                $currentLanguage = $this->chatBot->getFbUser()->language;
+
+                if ($fbUser->isConversationOn()) {
+                    // 1 check if conversation mode is on.
+                    // 2 if yes, save messages to database
+
+                    // 3 if no continue
+                } else {
+                    $result = $this->questionRepo->search($message, $currentLanguage);
+
+                    if ($result->isEmpty()) {
+                        //todo Implement Ask Manually Logic here
+
+                        // 1 . Ask user if he want to ask admin manual Yes or No
+                        $this->chatBot->askManually();
+                    } else {
+                        // 1 . Map Result into gallery view
+                        $data = $this->questionRepo->transform($result, ApiConstant::GALLERY, $currentLanguage);
+                        // 2 . show result to user
+                        $this->chatBot->reply($data->toArray(), ApiConstant::GALLERY);
+                    }
+                }
+
             }
 
             // just to verify web hook
@@ -116,16 +149,28 @@ class ChatBotController extends Controller
 
         $questionType = QuestionType::where('question_id', $questionId)->first();
 
-        if($questionType)
-        {
+        if ($questionType) {
             $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
             $this->chatBot->reply($questions->toArray(), $questionType->type);
         }
     }
 
+    private function isManuallyAsk($payload)
+    {
+        return $payload == "yes";
+    }
+
     public function test()
     {
         $fbUser = FbUser::firstOrNew(['psid' => '2085756598147281']);
+        //        $fbUser->language = 'zg';
         $this->chatBot->setFbUser($fbUser);
+//        $fbUser->save();
+        $this->chatBot->getFbUser()->conversationMode(ApiConstant::CONVERSATION_OFF);
+        $result = $this->questionRepo->search('အလုပ္', 'zg');
+        $json = $this->questionRepo->transform($result, ApiConstant::GALLERY, ApiConstant::ZAWGYI);
+        dd($json->toArray());
     }
+
+
 }

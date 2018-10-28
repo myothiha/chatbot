@@ -18,4 +18,5 @@ interface QuestionRepositoryInterface extends BaseRepositoryInterface
     function create(Request $request, $parentId);
     function update(Request $request, $parentId, Question $question);
     function delete(Question $question);
+    function search($keyword, $language);
 }

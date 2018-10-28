@@ -38,4 +38,7 @@ class ApiConstant
         self::IMAGE         => 'Image',
         self::GALLERY       => 'Gallery',
     ];
+
+    const CONVERSATION_ON = 1;
+    const CONVERSATION_OFF = 0;
 }

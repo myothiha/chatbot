@@ -6,6 +6,7 @@ use App\Models\Answers\Answer;
 use App\Models\Messenger\MessengerApi;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
+use App\Services\Messenger\ApiConstant;
 use App\Utils\Uploaders\ImageUploader;
 use Illuminate\Http\Request;
 
@@ -86,5 +87,23 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
     function delete(Question $question)
     {
         return $question->delete();
+    }
+
+    function search($keyword, $lang)
+    {
+        $result = collect([]);
+        switch ($lang) {
+            case ApiConstant::ZAWGYI :
+                $result = $this->model->searchMessage($keyword, "message_zg");
+                break;
+            case ApiConstant::MYANMAR3 :
+                $result = $this->model->searchMessage($keyword, "message_mm3");
+                break;
+            case ApiConstant::ENGLISH :
+                $result = $this->model->searchMessage($keyword, "message_en");
+                break;
+        }
+
+        return $result->visible()->get();
     }
 }
