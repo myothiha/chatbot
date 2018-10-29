@@ -50,7 +50,7 @@ class ChatBot
     public function setFbUser(FbUser $fbUser)
     {
         $this->fbUser = $fbUser;
-        $this->getProfile();
+        $fbUser->firstName ?? $this->getProfile();
     }
 
     public function getFbUser()

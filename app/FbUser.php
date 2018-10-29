@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FbUser extends Model
 {
+
     protected $fillable = ['psid'];
 
     public function getNameAttribute()
@@ -37,4 +38,8 @@ class FbUser extends Model
         return $this->conversation == ApiConstant::CONVERSATION_ON;
     }
 
+    public function conversations()
+    {
+        return $this->hasMany('App\Conversation');
+    }
 }

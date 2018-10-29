@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Conversation;
 use App\FbUser;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
@@ -76,7 +77,9 @@ class ChatBotController extends Controller
                     // 2 Ask User to input his request.
                     $this->chatBot->askUserToInputQuestion();
                 } else if ( $this->isNotManuallyAsk($payload) ) {
-                    // 1 reply something if user didn't choose to ask manually
+
+                    $this->chatBot->reply(["Thank you"], ApiConstant::TEXT);
+
                 } else {
                     $this->response($fbUser->language, $payload);
                 }
@@ -84,17 +87,19 @@ class ChatBotController extends Controller
 
                 $currentLanguage = $this->chatBot->getFbUser()->language;
 
+                // 1 check if conversation mode is on.
                 if ($fbUser->isConversationOn()) {
-                    // 1 check if conversation mode is on.
-                    // 2 if yes, save messages to database
 
-                    // 3 if no continue
+                    // 2 if yes, save messages to database
+                    $conversation = new Conversation(['message' => $message]);
+                    $fbUser->conversations()->save($conversation);
+
+                    //3 Turn off Conversation Mode
+                    $fbUser->conversationMode(ApiConstant::CONVERSATION_OFF);
                 } else {
                     $result = $this->questionRepo->search($message, $currentLanguage);
 
                     if ($result->isEmpty()) {
-                        //todo Implement Ask Manually Logic here
-
                         // 1 . Ask user if he want to ask admin manual Yes or No
                         $this->chatBot->askManually();
                     } else {
@@ -104,11 +109,12 @@ class ChatBotController extends Controller
                         $this->chatBot->reply($data->toArray(), ApiConstant::GALLERY);
                     }
                 }
+            } else {
 
             }
 
             // just to verify web hook
-            echo $this->getTextMessage($request);
+            echo $this->getTextMessage($request) ?? '';
         }
     }
 
@@ -160,7 +166,7 @@ class ChatBotController extends Controller
         return $payload == "yes";
     }
 
-    private function isNotManuallyAsk(bool $payload)
+    private function isNotManuallyAsk($payload)
     {
         return $payload == "no";
     }
@@ -168,10 +174,19 @@ class ChatBotController extends Controller
     public function test()
     {
         $fbUser = FbUser::firstOrNew(['psid' => '1509536415814995']);
+
+//        dd($fbUser->conversations);
         $fbUser->language = 'zg';
         $this->chatBot->setFbUser($fbUser);
-//        $fbUser->save();
-        dd($this->chatBot->getFbUser()->toArray());
+        $fbUser->save();
+//        dd($this->chatBot->getFbUser()->toArray());
+
+        $conversation = new Conversation(['message' => 'Hello Please help me']);
+
+        $fbUser->conversations()->save($conversation);
+
+        dd($fbUser->conversations);
+
         $this->chatBot->getFbUser()->conversationMode(ApiConstant::CONVERSATION_OFF);
         $result = $this->questionRepo->search('အလုပ္', 'zg');
         $json = $this->questionRepo->transform($result, ApiConstant::GALLERY, ApiConstant::ZAWGYI);

@@ -14,12 +14,12 @@ class AddProfileFieldsToFbUserTable extends Migration
     public function up()
     {
         Schema::table('fb_users', function (Blueprint $table) {
-            $table->string('firstName');
-            $table->string('lastName');
-            $table->text('profilePic');
-            $table->string('locale');
-            $table->string('timezone');
-            $table->string('gender');
+            $table->string('firstName')->nullable();
+            $table->string('lastName')->nullable();
+            $table->text('profilePic')->nullable();
+            $table->string('locale')->nullable();
+            $table->string('timezone')->nullable();
+            $table->string('gender')->nullable();
         });
     }
 

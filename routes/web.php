@@ -28,6 +28,9 @@ Route::delete('/questions/{parentId}/delete/{question}',    'QuestionController@
 
 Route::post('/questionTypes/{parentId}',                  'QuestionTypeController@store');
 
+Route::get('/conversations', 'ConversationController@index');
+Route::get('/conversations/reply/{fbUser}', 'ConversationController@reply');
+
 Route::get('/answers/{questionId?}',                      'AnswerController@index');
 Route::get('/answers/{questionId}/create',                'AnswerController@create');
 Route::post('/answers/{questionId}',                      'AnswerController@store');

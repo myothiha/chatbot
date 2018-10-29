@@ -22,7 +22,7 @@ trait RequestHandlerTrait
             // will only ever contain one message, so we get index 0
             $message = $entry_item["messaging"][0]["message"];
         }*/
-        return $request['entry'][0]["messaging"][0]["message"] ?? false;
+        return $request['entry'][0]["messaging"][0]["message"]["text"] ?? false;
     }
 
     private function getPayLoad(Request $request)

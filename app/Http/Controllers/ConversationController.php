@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Conversation;
+use App\FbUser;
 use Illuminate\Http\Request;
 
 class ConversationController extends Controller
@@ -14,7 +15,20 @@ class ConversationController extends Controller
      */
     public function index()
     {
-        //
+        $fbUsers = FbUser::all()->filter(function ($value, $key) {
+            return $value->conversations->isNotEmpty();
+        });
+
+        return view('admin.conversations.index', [
+            'fbUsers' => $fbUsers
+        ]);
+    }
+
+    public function reply(FbUser $fbUser)
+    {
+        return view('admin.conversations.reply', [
+            'fbUser' => $fbUser
+        ]);
     }
 
     /**
@@ -30,7 +44,7 @@ class ConversationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +55,7 @@ class ConversationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Conversation $conversation
      * @return \Illuminate\Http\Response
      */
     public function show(Conversation $conversation)
@@ -52,7 +66,7 @@ class ConversationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Conversation $conversation
      * @return \Illuminate\Http\Response
      */
     public function edit(Conversation $conversation)
@@ -63,8 +77,8 @@ class ConversationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Conversation  $conversation
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Conversation $conversation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Conversation $conversation)
@@ -75,7 +89,7 @@ class ConversationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Conversation $conversation
      * @return \Illuminate\Http\Response
      */
     public function destroy(Conversation $conversation)

@@ -15,6 +15,7 @@ class AddConversationModeToFbUsers extends Migration
     {
         Schema::table('fb_users', function (Blueprint $table) {
             $table->tinyInteger('conversation')->default(0);
+            $table->tinyInteger('seen')->default(0);
         });
     }
 
@@ -27,6 +28,7 @@ class AddConversationModeToFbUsers extends Migration
     {
         Schema::table('fb_users', function (Blueprint $table) {
             $table->dropColumn('conversation');
+            $table->dropColumn('seen');
         });
     }
 }
