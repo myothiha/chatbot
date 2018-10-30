@@ -151,8 +151,10 @@ class ChatBotController extends Controller
     {
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
-        $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
-        $this->chatBot->reply($answers->toArray(), $answerType->type);
+        if ($answerType) {
+            $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
+            $this->chatBot->reply($answers->toArray(), $answerType->type);
+        }
 
         $questionType = QuestionType::where('question_id', $questionId)->first();
 

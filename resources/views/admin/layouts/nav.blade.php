@@ -12,7 +12,7 @@
                     <li class="nav-item {{ request()->is('questions/*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ action('QuestionController@index', 0) }}">Questions</a>
                     </li>
-                    <li class="nav-item {{ request()->is('answers/*') ? 'active' : '' }}">
+                    <li class="nav-item {{ request()->path() }} {{ request()->is('conversations') ? 'active' : 'aaa' }}">
                         <a class="nav-link" href="{{ action('ConversationController@index') }}">Conversations</a>
                     </li>
 

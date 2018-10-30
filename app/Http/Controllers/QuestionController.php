@@ -58,7 +58,11 @@ class QuestionController extends Controller
      */
     public function create($parentId)
     {
+        $parentQuestion = Question::find($parentId);
+        $parentQuestions = $parentQuestion ? $parentQuestion->getParentList()->reverse() : collect();
+
         return view('admin.questions.create', [
+            'parentQuestions' => $parentQuestions,
             'parentId' => $parentId,
             'types' => ApiConstant::TYPES,
         ]);
@@ -87,8 +91,11 @@ class QuestionController extends Controller
      */
     public function edit($parentId, Question $question)
     {
-//        dd($question->toArray()); //Todo remove
+        $parentQuestion = Question::find($parentId);
+        $parentQuestions = $parentQuestion ? $parentQuestion->getParentList()->reverse() : collect();
+
         return view('admin.questions.edit', [
+            'parentQuestions' => $parentQuestions,
             'question'  => $question,
             'parentId'  => $parentId,
         ]);

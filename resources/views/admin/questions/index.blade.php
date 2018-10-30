@@ -8,19 +8,25 @@
 
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
-    <li class="breadcrumb-item">
-        Index
-    </li>
-    <li class="breadcrumb-item">
-        <a href="{{ action('QuestionController@index', 0) }}">List</a>
-    </li>
-
-    @foreach($parentQuestions as $question)
+    <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="{{ action('QuestionController@index', $question->id) }}">{{ $question->message_en }}</a>
+            Index
         </li>
-    @endforeach
+        <li class="breadcrumb-item">
+            <a href="{{ action('QuestionController@index', 0) }}">List</a>
+        </li>
 
+        @foreach($parentQuestions as $question)
+            <li class="breadcrumb-item">
+                @if($question->is($parentQuestions->last()))
+                    <a href="{{ action('QuestionController@index', $question->id) }}"><b>{{ $question->message_en }}</b></a>
+                @else
+                    <a href="{{ action('QuestionController@index', $question->id) }}">{{ $question->message_en }}</a>
+                @endif
+
+            </li>
+        @endforeach
+    </ol>
 @endsection
 
 @section('content')
@@ -74,7 +80,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Answer (EN)</th>
-                <th scope="col">Answer (MM)</th>
+                <th scope="col">Answer (MM3)</th>
+                <th scope="col">Answer (ZG)</th>
+                <th scope="col">Image</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -84,7 +92,9 @@
                 <tr>
                     <th scope="row">{{ ++$index }}</th>
                     <td><p>{!! nl2br($answer->message_en) !!}</p></td>
+                    <td><p>{!! nl2br($answer->message_mm3) !!}</p></td>
                     <td><p>{!! nl2br($answer->message_zg) !!}</p></td>
+                    <td><img src="{{ $answer->thumbnail }}" /></td>
                     <td><a href="{{ action('AnswerController@edit', [$parentId, $answer->id]) }}"
                            class="btn btn-outline-dark">Edit</a></td>
                     <td>
@@ -93,7 +103,7 @@
 
                             {{ csrf_field() }}
 
-                            <input type="hidden" name="_method" value="DELETE" />
+                            <input type="hidden" name="_method" value="DELETE"/>
 
                             <input type="submit" class="btn btn-outline-danger" name="btnSubmit" value="Delete"/>
                         </form>
@@ -152,7 +162,9 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Question (EN)</th>
-                <th scope="col">Question (MM)</th>
+                <th scope="col">Question (MM3)</th>
+                <th scope="col">Question (ZG)</th>
+                <th scope="col">Image</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -161,10 +173,10 @@
             <tbody>
             @foreach($questions as $index => $question)
                 <tr>
-
-                    <th scope="row">{{ ++$index }}</th>
-                    <td>{{ $question->message_en }}</td>
-                    <td>{{ $question->message_zg }}</td>
+                    <td><p>{!! nl2br($question->message_en) !!}</p></td>
+                    <td><p>{!! nl2br($question->message_mm3) !!}</p></td>
+                    <td><p>{!! nl2br($question->message_zg) !!}</p></td>
+                    <td><img src="{{ $question->thumbnail }}" /></td>
                     <td><a href="{{ action('QuestionController@index', $question->id) }}"
                            class="btn btn-outline-info">Sub Questions</a></td>
                     <td><a href="{{ action('QuestionController@edit', [$parentId, $question->id]) }}"

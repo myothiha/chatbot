@@ -6,6 +6,7 @@ use App\Models\Answers\Answer;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
+use App\Models\Questions\Question;
 use App\Services\Messenger\ApiConstant;
 use Illuminate\Http\Request;
 
@@ -49,8 +50,10 @@ class AnswerController extends Controller
      */
     public function create($parentId)
     {
-
+        $parentQuestion = Question::find($parentId);
+        $parentQuestions = $parentQuestion ? $parentQuestion->getParentList()->reverse() : collect();
         return view('admin.answers.create', [
+            'parentQuestions' => $parentQuestions,
             'questionId'    => $parentId,
             'types'         => ApiConstant::TYPES,
         ]);
@@ -89,7 +92,11 @@ class AnswerController extends Controller
      */
     public function edit($questionId, Answer $answer)
     {
+        $parentQuestion = Question::find($questionId);
+        $parentQuestions = $parentQuestion ? $parentQuestion->getParentList()->reverse() : collect();
+
         return view('admin.answers.edit', [
+            'parentQuestions' => $parentQuestions,
             'answer'  => $answer,
             'questionId'  => $questionId,
         ]);

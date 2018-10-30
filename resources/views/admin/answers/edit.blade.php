@@ -2,21 +2,30 @@
 
 @section('title', 'Page Title')
 
-@section('heading', 'Questions')
+@section('heading', 'Answer')
 
-@section('subheading', 'List')
+@section('subheading', 'Edit')
 
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
-    <li class="breadcrumb-item">
-        Questions</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="{{ action('AnswerController@index', $questionId) }}">List</a>
-    </li>
-    <li class="breadcrumb-item active">
-        <a href="{{ action('AnswerController@edit', [$questionId, $answer->id] ) }}">Edit Question</a>
-    </li>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            Index
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ action('QuestionController@index', 0) }}">List</a>
+        </li>
+
+        @foreach($parentQuestions as $question)
+            <li class="breadcrumb-item">
+                <a href="{{ action('QuestionController@index', $question->id) }}">{{ $question->message_en }}</a>
+            </li>
+        @endforeach
+
+        <li class="breadcrumb-item active">
+            <a href="#"><b>{{ $answer->message_en }} Edit</b></a>
+        </li>
+    </ol>
 @endsection
 
 @section('content')

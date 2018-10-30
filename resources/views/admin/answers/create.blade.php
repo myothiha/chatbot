@@ -6,15 +6,24 @@
 
 <!-- Breadcrumb Section -->
 @section('breadcrumb')
-    <li class="breadcrumb-item">
-        <a>Answers</a>
-    </li>
-    <li class="breadcrumb-item">
-        <a href="{{ action('AnswerController@index', $questionId) }}">List</a>
-    </li>
-    <li class="breadcrumb-item active">
-        <a href="{{ action('AnswerController@create', $questionId) }}">Create Answer</a>
-    </li>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            Index
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ action('QuestionController@index', 0) }}">List</a>
+        </li>
+
+        @foreach($parentQuestions as $question)
+            <li class="breadcrumb-item">
+                <a href="{{ action('QuestionController@index', $question->id) }}">{{ $question->message_en }}</a>
+            </li>
+        @endforeach
+
+        <li class="breadcrumb-item active">
+            <a href="#"><b>Create New Answer</b></a>
+        </li>
+    </ol>
 @endsection
 
 @section('content')
