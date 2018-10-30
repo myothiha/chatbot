@@ -58,7 +58,7 @@ class ConversationController extends Controller
 
         $fbUser->seenMode(ApiConstant::SEEN); // Todo mark seen when admin reply message
 
-        return redirect()->back();
+        return $this->index($fbUser);
     }
 
     private function format(Collection $collection) {
