@@ -32,7 +32,7 @@ class ConversationController extends Controller
 
         $seenFbUsers = $this->format(FbUser::seen()->get());
 
-        $currentFbUser = $fbUser ?? $fbUsers->first();
+        $currentFbUser = ($fbUser ?? $fbUsers->first()) ?? $seenFbUsers->first();
 
 //        dd($currentFbUser->conversations->last()->replies->toArray());
 
@@ -58,7 +58,7 @@ class ConversationController extends Controller
 
         $fbUser->seenMode(ApiConstant::SEEN); // Todo mark seen when admin reply message
 
-        return $this->index($fbUser);
+        return redirect("/conversations/{$fbUser->id}");
     }
 
     private function format(Collection $collection) {

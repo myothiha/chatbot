@@ -12,6 +12,7 @@ use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as UriRequest;
 use Illuminate\Support\Facades\Log;
 
 class ChatBotController extends Controller
@@ -22,6 +23,8 @@ class ChatBotController extends Controller
     private $chatBot;
     private $questionRepo;
     private $answerRepo;
+
+
 
     public function __construct(ChatBot $chatBot, QuestionRepositoryInterface $questionRepository, AnswerRepositoryInterface $answerRepository)
     {
@@ -142,6 +145,23 @@ class ChatBotController extends Controller
         $this->chatBot->postBackButton($buttons, "Choose Language.");
     }
 
+    private function askManuallyButton()
+    {
+        $data= $this->chatBot->getAskAdminMenus();
+        return [
+            "title" => $data["message"],
+            "image_url" => UriRequest::root() . '/uploads/ask_admin.jpg',
+            "subtitle" => "",
+            "buttons" => [
+                [
+                    "type" => "postback",
+                    "title" => $data["button"],
+                    "payload" => 'yes',
+                ]
+            ]
+        ];
+    }
+
     private function onSelectedLanguage($lang)
     {
         return ($lang == ApiConstant::ZAWGYI || $lang == ApiConstant::MYANMAR3 || $lang == ApiConstant::ENGLISH);
@@ -160,8 +180,21 @@ class ChatBotController extends Controller
 
         if ($questionType) {
             $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
+
+            if($this->isTopQuestion($questionId))
+            {
+                $askManually = $this->askManuallyButton();
+                $questions->push($askManually);
+            }
+//            dd($questions->all());
+
             $this->chatBot->reply($questions->toArray(), $questionType->type);
         }
+    }
+
+    private function isTopQuestion($questionId)
+    {
+        return $questionId==0;
     }
 
     private function isManuallyAsk($payload)
@@ -183,7 +216,7 @@ class ChatBotController extends Controller
         $this->chatBot->setFbUser($fbUser);
         $fbUser->save();
 
-        $this->response($fbUser->language, 51);
+        $this->response($fbUser->language, 0);
 //        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());
 

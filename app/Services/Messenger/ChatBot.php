@@ -31,6 +31,21 @@ class ChatBot
         ApiConstant::ENGLISH    => "Ask your question now."
     ];
 
+    private $askAdminManually = [
+        ApiConstant::MYANMAR3   => [
+            'button'    => "မေးမည်",
+            'message'   => "Adminသို့ မေးခွန်းမေးမည်။"
+        ],
+        ApiConstant::ZAWGYI     => [
+            'button'    => "ေမးမည္",
+            'message'   => "Adminသို႔ ေမးခြန္းေမးမည္။"
+        ],
+        ApiConstant::ENGLISH    => [
+            'button'    => "Ask",
+            'message'   => "Ask Question to Admin"
+        ],
+    ];
+
     public function __construct()
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
@@ -45,6 +60,11 @@ class ChatBot
     public function getUserInputText()
     {
         return $this->askUserInput[$this->fbUser->language];
+    }
+
+    public function getAskAdminMenus()
+    {
+        return $this->askAdminManually[$this->fbUser->language];
     }
 
     public function setFbUser(FbUser $fbUser)

@@ -173,6 +173,7 @@
             <tbody>
             @foreach($questions as $index => $question)
                 <tr>
+                    <td>{{ ++$index }}</td>
                     <td><p>{!! nl2br($question->message_en) !!}</p></td>
                     <td><p>{!! nl2br($question->message_mm3) !!}</p></td>
                     <td><p>{!! nl2br($question->message_zg) !!}</p></td>
