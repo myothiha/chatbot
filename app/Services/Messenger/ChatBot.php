@@ -20,8 +20,8 @@ class ChatBot
     private $fbUser;
 
     public $greeting = [
-        ApiConstant::MYANMAR3   => "ဟိုင်း \“%username\” မယ်ရွှေ့ပြောင်းမှ ကြိုဆိုပါတယ်။",
-        ApiConstant::ZAWGYI     => "ဟိုင္း \“%username\” မယ္ေရႊ႕ေျပာင္းမွ ၾကိဳဆိုပါတယ္။",
+        ApiConstant::MYANMAR3   => "ဟိုင်း “%username” မယ်ရွှေ့ပြောင်းမှ ကြိုဆိုပါတယ်။",
+        ApiConstant::ZAWGYI     => "ဟိုင္း “%username” မယ္ေရႊ႕ေျပာင္းမွ ၾကိဳဆိုပါတယ္။",
         ApiConstant::ENGLISH    => "Hi \"%username\" Welcome to Miss Migration."
     ];
 
