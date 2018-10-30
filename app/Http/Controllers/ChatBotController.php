@@ -64,11 +64,11 @@ class ChatBotController extends Controller
 
             if ($payload = $this->getPayload($request)) {
                 if ($payload == "start") {
-                    $this->chatBot->greetUser();
                     $this->askToChooseLanguage($fbUser);
                 } else if ($this->onSelectedLanguage($payload)) {
                     $fbUser->language = $payload;
                     $fbUser->save();
+                    $this->chatBot->greetUser();
                     $this->response($fbUser->language);
                 } else if ($this->isManuallyAsk($payload)) {
                     // Todo ask manually
@@ -183,14 +183,15 @@ class ChatBotController extends Controller
         $this->chatBot->setFbUser($fbUser);
         $fbUser->save();
 
-        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
+        $this->response($fbUser->language, 51);
+//        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());
 
         $conversation = new Conversation(['message' => 'I am moe lone. I need help.']);
 
-        $fbUser->conversations()->save($conversation);
+//        $fbUser->conversations()->save($conversation);
 
-        dd($fbUser->conversations);
+//        dd($fbUser->conversations);
 
         $this->chatBot->getFbUser()->conversationMode(ApiConstant::CONVERSATION_OFF);
         $result = $this->questionRepo->search('အလုပ္', 'zg');

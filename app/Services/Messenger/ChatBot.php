@@ -20,9 +20,9 @@ class ChatBot
     private $fbUser;
 
     public $greeting = [
-        ApiConstant::MYANMAR3   => "မင်္ဂလာပါ %username Miss Migration မှကြိုဆိုပါတယ်။ မေးမြန်းလိုသော အကြောင်းအရာကို ရွေးချယ်ပေးပါ",
-        ApiConstant::ZAWGYI     => "မဂၤလာပါ %username Miss Migration မွႀကိဳဆိုပါတယ္။ ေမးျမန္းလိုေသာ အေၾကာင္းအရာကို ေရြးခ်ယ္ေပးပါ",
-        ApiConstant::ENGLISH    => "Hi %username. Welcome to Miss Migration. Please select your questions."
+        ApiConstant::MYANMAR3   => "ဟိုင်း \“%username\” မယ်ရွှေ့ပြောင်းမှ ကြိုဆိုပါတယ်။",
+        ApiConstant::ZAWGYI     => "ဟိုင္း \“%username\” မယ္ေရႊ႕ေျပာင္းမွ ၾကိဳဆိုပါတယ္။",
+        ApiConstant::ENGLISH    => "Hi \"%username\" Welcome to Miss Migration."
     ];
 
     public $askUserInput = [
