@@ -10,6 +10,16 @@ class FbUser extends Model
 
     protected $fillable = ['psid'];
 
+    public function scopeNotSeen($query)
+    {
+        return $query->where('seen', 0);
+    }
+
+    public function scopeSeen($query)
+    {
+        return $query->where('seen', 1);
+    }
+
     public function getNameAttribute()
     {
         return $this->firstName . " " . $this->lastName;
@@ -17,12 +27,12 @@ class FbUser extends Model
 
     public function saveProfileData($profile)
     {
-        $this->firstName    = $profile->first_name;
-        $this->lastName     = $profile->last_name;
-        $this->profilePic   = $profile->profile_pic;
-        $this->locale       = $profile->locale;
-        $this->timezone     = $profile->timezone;
-        $this->gender       = $profile->gender;
+        $this->firstName = $profile->first_name;
+        $this->lastName = $profile->last_name;
+        $this->profilePic = $profile->profile_pic;
+        $this->locale = $profile->locale;
+        $this->timezone = $profile->timezone;
+        $this->gender = $profile->gender;
 
         $this->save();
     }
@@ -30,6 +40,12 @@ class FbUser extends Model
     public function conversationMode($mode)
     {
         $this->conversation = $mode;
+        $this->save();
+    }
+
+    public function seenMode($mode)
+    {
+        $this->seen = $mode;
         $this->save();
     }
 

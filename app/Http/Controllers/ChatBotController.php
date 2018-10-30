@@ -74,6 +74,7 @@ class ChatBotController extends Controller
                     // Todo ask manually
                     // 1 Open Conversation Mode
                     $fbUser->conversationMode(ApiConstant::CONVERSATION_ON);
+                    $fbUser->seenMode(ApiConstant::NOT_SEEN);
                     // 2 Ask User to input his request.
                     $this->chatBot->askUserToInputQuestion();
                 } else if ( $this->isNotManuallyAsk($payload) ) {
@@ -179,9 +180,11 @@ class ChatBotController extends Controller
         $fbUser->language = 'zg';
         $this->chatBot->setFbUser($fbUser);
         $fbUser->save();
+
+        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());
 
-        $conversation = new Conversation(['message' => 'Hello Please help me']);
+        $conversation = new Conversation(['message' => 'I am moe lone. I need help.']);
 
         $fbUser->conversations()->save($conversation);
 

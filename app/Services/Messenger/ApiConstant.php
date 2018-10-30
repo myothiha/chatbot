@@ -41,4 +41,7 @@ class ApiConstant
 
     const CONVERSATION_ON = 1;
     const CONVERSATION_OFF = 0;
+
+    const SEEN = 1;
+    const NOT_SEEN = 0;
 }

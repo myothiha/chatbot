@@ -80,9 +80,7 @@
         </h1>
     </div>
     <div class="row">
-        <ol class="breadcrumb">
             @yield('breadcrumb')
-        </ol>
     </div>
 
     @yield('content')
