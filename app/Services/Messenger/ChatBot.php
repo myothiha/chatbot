@@ -68,7 +68,7 @@ class ChatBot
                 $this->quickReply($message, $text);
                 break;
             case ApiConstant::BUTTON :
-                $this->postBackButton($message, $text);
+                $this->multiplePostBack($message);
                 break;
             case ApiConstant::IMAGE :
                 $this->image($message);

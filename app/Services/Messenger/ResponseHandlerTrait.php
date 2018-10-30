@@ -40,6 +40,14 @@ trait ResponseHandlerTrait
         $this->fbUser->saveProfileData(json_decode($data));
     }
 
+    public function multiplePostBack(array $messages)
+    {
+        foreach ($messages as $message)
+        {
+            $this->postBackButton([$message['button']], $message['text']);
+        }
+    }
+
     public function postBackButton(array $buttons, $text = null)
     {
         $data = [

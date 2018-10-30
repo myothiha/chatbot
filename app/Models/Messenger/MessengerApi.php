@@ -26,7 +26,7 @@ abstract class MessengerApi extends BaseRepository
                 $function = "quickReply";
                 break;
             case ApiConstant::BUTTON :
-                $function = "button";
+                $function = "multipleButton";
                 break;
             case ApiConstant::IMAGE :
                 $function = "textAndImage";
@@ -68,6 +68,18 @@ abstract class MessengerApi extends BaseRepository
             "title"         => $messengerApi->message($lang),
             "payload"       => $messengerApi->id,
             "image_url"     => $messengerApi->apiImageSmall(),
+        ];
+    }
+
+    public function multipleButton(MessengerApiInterface $messengerApi, $lang)
+    {
+        return [
+            "text" => $messengerApi->message($lang),
+            "button" => [
+                "type" => "postback",
+                "title" => $messengerApi->button($lang),
+                "payload" => $messengerApi->id,
+            ],
         ];
     }
 
