@@ -42,6 +42,6 @@ trait RequestHandlerTrait
 
     private function getSenderId(Request $request)
     {
-        return $request['entry'][0]['messaging'][0]['sender']['id'];
+        return $request['entry'][0]['messaging'][0]['sender']['id'] ?? null;
     }
 }

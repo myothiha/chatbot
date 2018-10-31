@@ -55,14 +55,18 @@ class ChatBotController extends Controller
 
     public function handle(Request $request)
     {
-//        Log::debug($request->all());
+        // Log::debug($request->all());
 
         $senderId = $this->getSenderId($request);
+        
+    
+        Log::debug(var_dump($senderId==null));
 
         // Checks this is an event from a page subscription
         if ($request->object == 'page') {
 
             $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
+
             $this->chatBot->setFbUser($fbUser);
 
             if ($payload = $this->getPayload($request)) {
@@ -186,6 +190,7 @@ class ChatBotController extends Controller
                 $askManually = $this->askManuallyButton();
                 $questions->push($askManually);
             }
+            
 //            dd($questions->all());
 
             $this->chatBot->reply($questions->toArray(), $questionType->type);

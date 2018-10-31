@@ -30,11 +30,12 @@ trait ResponseHandlerTrait
 //        dd($this->fbUser->psid);
         $profile = $this->client->request("GET", "/{$this->fbUser->psid}", [
             'query'  => [
-                'fields'        => 'id,name,first_name,last_name,profile_pic,locale,timezone,gender',
                 'access_token'  => ApiConstant::ACCESS_TOKEN,
+                'fields'        => 'id,name,first_name,last_name,profile_pic,locale,timezone,gender',
+                'scrape'        => "true",
             ],
         ]);
-
+        
         $data = $profile->getBody()->getContents();
 //        dd(json_decode($data));
         $this->fbUser->saveProfileData(json_decode($data));
@@ -159,6 +160,7 @@ trait ResponseHandlerTrait
         $this->client->request($requestType, ApiConstant::MESSAGE, [
             'query'  => [
                 'access_token' => ApiConstant::ACCESS_TOKEN,
+                'scrape'        => "true",
             ],
             'json'  => $data,
         ]);
