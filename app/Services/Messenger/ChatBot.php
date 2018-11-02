@@ -120,8 +120,6 @@ class ChatBot
                 $this->gallery($message);
                 break;
         }
-
-        return $response;
     }
 
     public function greetUser()

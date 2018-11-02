@@ -119,10 +119,9 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
                 break;
             }
             $question = $question->parent;
-            $count ++;
-        } while($count > $levelToJump);
+            $count++;
+        } while($count < $levelToJump);
 
         return $question->id;
-
     }
 }

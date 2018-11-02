@@ -229,7 +229,7 @@ class ChatBotController extends Controller
         $this->chatBot->setFbUser($fbUser);
         $fbUser->save();
 
-        $this->response($fbUser->language, 43);
+        $this->response($fbUser->language, 52);
         dd('stop');
 //        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());

@@ -10,10 +10,10 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item {{ request()->is('questions/*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ action('QuestionController@index', 0) }}">Questions</a>
+                        <a class="nav-link" href="{{ action('QuestionController@index', 0) }}">Bot Data Entry</a>
                     </li>
                     <li class="nav-item {{ request()->path() }} {{ request()->is('conversations') ? 'active' : 'aaa' }}">
-                        <a class="nav-link" href="{{ action('ConversationController@index') }}">Conversations</a>
+                        <a class="nav-link" href="{{ action('ConversationController@index') }}">Messages</a>
                     </li>
 
                     <li class="nav-item dropdown">

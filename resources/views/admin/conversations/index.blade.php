@@ -13,7 +13,7 @@
             <a href="{{ action('QuestionController@index', 0) }}">Home</a>
         </li>
         <li class="breadcrumb-item active">
-            <a>Conversation</a>
+            <a>Messages</a>
         </li>
     </ol>
 @endsection
