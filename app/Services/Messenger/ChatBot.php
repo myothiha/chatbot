@@ -46,6 +46,24 @@ class ChatBot
         ],
     ];
 
+    private $endMessage = [
+        ApiConstant::MYANMAR3   => [
+            'message'        => 'အခြားမေးခွန်းမေးမည်။',
+            'topQuestion'    => "အစက ပြန်မေးမယ်",
+            'prevQuestion'   => "နောက်ဆုံးမေးခွန်း"
+        ],
+        ApiConstant::ZAWGYI     => [
+            'message'        => 'အျခားေမးခြန္းေမးမည္။',
+            'topQuestion'    => "အစက ျပန္ေမးမယ္",
+            'prevQuestion'   => "ေနာက္ဆုံးေမးခြန္း"
+        ],
+        ApiConstant::ENGLISH    => [
+            'message'        => 'Ask another question.',
+            'topQuestion'    => "Questions from start.",
+            'prevQuestion'   => "Previous question."
+        ],
+    ];
+
     public function __construct()
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
@@ -67,6 +85,11 @@ class ChatBot
         return $this->askAdminManually[$this->fbUser->language];
     }
 
+    public function getEndMessage()
+    {
+        return $this->endMessage[$this->fbUser->language];
+    }
+
     public function setFbUser(FbUser $fbUser)
     {
         $this->fbUser = $fbUser;
@@ -82,7 +105,7 @@ class ChatBot
     {
         switch ($type) {
             case ApiConstant::TEXT :
-                $this->text($message);
+                $response = $this->text($message);
                 break;
             case ApiConstant::QUICK_REPLY :
                 $this->quickReply($message, $text);
@@ -97,6 +120,8 @@ class ChatBot
                 $this->gallery($message);
                 break;
         }
+
+        return $response;
     }
 
     public function greetUser()
@@ -127,5 +152,24 @@ class ChatBot
         $this->postBackButton($buttons, "Do you Want to ask admin manually ? ");
     }
 
+    public function endMessage($prevQuestionId)
+    {
+        $message = $this->getEndMessage();
+
+        $buttons = [
+            [
+                "type" => "postback",
+                "title" => $message["topQuestion"],
+                "payload" => $this->fbUser->language,
+            ],
+            [
+                "type" => "postback",
+                "title" => $message["prevQuestion"],
+                "payload" => $prevQuestionId,
+            ],
+        ];
+
+        $this->postBackButton($buttons, $message["message"]);
+    }
 
 }

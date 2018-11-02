@@ -15,7 +15,7 @@ class ApiConstant
 
     const MESSAGE = "/v2.6/me/messages";
 
-    const ACCESS_TOKEN = "EAAgS93j7IooBABeFFZCXgRXIRkTrWMHmonrccFTwLs4m2drPznDweU5gqesue1qZCADJ0E8ZBh3hwlePq6aBIrHdVB3qzvAJytimM6JW2CjaQxSfGyIWaJpkDaafb0QmTs6Gl8yjyjHbZANN0Fg9gY598qkI30OlZCpTOxZCeHjYE9aL8mnW40";
+    const ACCESS_TOKEN = "EAAC8bkI13yUBAO92eHRVhtZAqbP6yWUbh6dW06TFSVlwo8372kPYZBYgNullVNdgXe2uWlkZCGqDZBwGeBN9VYR5IvkESvQenkHj8Hy8u9C9ZB977vZAcBm6dooygFyDy1BJpf6yiUlLskzEVBDNcZBWCZCL7y2dEZAdNuJKL1GN3z6bSTZCOqcNg7";
 
     const ZAWGYI = "zg";
 

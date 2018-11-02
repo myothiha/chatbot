@@ -106,4 +106,23 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
 
         return $result->visible()->get();
     }
+
+    function getPreviousQuestion($currentId, int $levelToJump)
+    {
+        $question = Question::find($currentId);
+
+        $count = 0;
+
+        do {
+            if($question->parent == null)
+            {
+                break;
+            }
+            $question = $question->parent;
+            $count ++;
+        } while($count > $levelToJump);
+
+        return $question->id;
+
+    }
 }

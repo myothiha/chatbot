@@ -7,6 +7,7 @@ use App\FbUser;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
+use App\Models\Questions\Question;
 use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
@@ -55,15 +56,14 @@ class ChatBotController extends Controller
 
     public function handle(Request $request)
     {
-        // Log::debug($request->all());
+         //Log::debug($request->all());
 
         $senderId = $this->getSenderId($request);
-        
-    
-        Log::debug(var_dump($senderId==null));
 
         // Checks this is an event from a page subscription
-        if ($request->object == 'page') {
+        if ($request->object == 'page' AND json_encode($senderId)!='null' AND $senderId!=422359484916418) {
+
+            Log::debug("ddddd".json_encode($senderId));
 
             $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
 
@@ -104,6 +104,7 @@ class ChatBotController extends Controller
 
                     //3 Turn off Conversation Mode
                     $fbUser->conversationMode(ApiConstant::CONVERSATION_OFF);
+                    $this->chatBot->reply(["Your message have been sent to admin and will be replied shortly."], ApiConstant::TEXT);
                 } else {
                     $result = $this->questionRepo->search($message, $currentLanguage);
 
@@ -117,13 +118,46 @@ class ChatBotController extends Controller
                         $this->chatBot->reply($data->toArray(), ApiConstant::GALLERY);
                     }
                 }
-            } else {
-
             }
 
             // just to verify web hook
             echo $this->getTextMessage($request) ?? '';
         }
+    }
+
+    public function response($lang, $questionId = 0)
+    {
+        $answerType = AnswerType::where('answer_id', $questionId)->first();
+
+        if ($answerType) {
+            $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
+            $this->chatBot->reply($answers->toArray(), $answerType->type);
+        }
+
+        $questionType = QuestionType::where('question_id', $questionId)->first();
+
+        if ($questionType) {
+            $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
+
+            if($questions->isEmpty()){
+                $this->endQuestion($questionId);
+            } else {
+                if($this->isTopQuestion($questionId))
+                {
+                    $askManually = $this->askManuallyButton();
+                    $questions->push($askManually);
+                }
+                $this->chatBot->reply($questions->toArray(), $questionType->type);
+            }
+        } else {
+            $this->endQuestion($questionId);
+        }
+    }
+
+    private function endQuestion($questionId)
+    {
+        $prevId = $this->questionRepo->getPreviousQuestion($questionId, 3);
+        $this->chatBot->endMessage($prevId);
     }
 
     private function askToChooseLanguage(FbUser $fbUser)
@@ -171,32 +205,6 @@ class ChatBotController extends Controller
         return ($lang == ApiConstant::ZAWGYI || $lang == ApiConstant::MYANMAR3 || $lang == ApiConstant::ENGLISH);
     }
 
-    public function response($lang, $questionId = 0)
-    {
-        $answerType = AnswerType::where('answer_id', $questionId)->first();
-
-        if ($answerType) {
-            $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
-            $this->chatBot->reply($answers->toArray(), $answerType->type);
-        }
-
-        $questionType = QuestionType::where('question_id', $questionId)->first();
-
-        if ($questionType) {
-            $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
-
-            if($this->isTopQuestion($questionId))
-            {
-                $askManually = $this->askManuallyButton();
-                $questions->push($askManually);
-            }
-            
-//            dd($questions->all());
-
-            $this->chatBot->reply($questions->toArray(), $questionType->type);
-        }
-    }
-
     private function isTopQuestion($questionId)
     {
         return $questionId==0;
@@ -214,14 +222,15 @@ class ChatBotController extends Controller
 
     public function test()
     {
-        $fbUser = FbUser::firstOrNew(['psid' => '1509536415814995']);
+        $fbUser = FbUser::firstOrNew(['psid' => '1889983827706459']);
 
 //        dd($fbUser->conversations);
         $fbUser->language = 'zg';
         $this->chatBot->setFbUser($fbUser);
         $fbUser->save();
 
-        $this->response($fbUser->language, 0);
+        $this->response($fbUser->language, 43);
+        dd('stop');
 //        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());
 

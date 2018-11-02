@@ -155,7 +155,27 @@ trait ResponseHandlerTrait
         $this->sendRequest('POST', $data);
     }
 
+    public function senderAction($action) {
+        $data = [
+            "recipient" => [
+                "id" => $this->fbUser->psid,
+            ],
+            "sender_action" => $action,
+        ];
+
+        $this->httpRequest('POST', $data);
+    }
+
     private function sendRequest($requestType, $data)
+    {
+        $this->senderAction('mark_seen');
+        $this->senderAction('typing_on');
+        sleep(2);
+
+        $this->httpRequest($requestType, $data);
+    }
+
+    private function httpRequest($requestType, $data)
     {
         $this->client->request($requestType, ApiConstant::MESSAGE, [
             'query'  => [
@@ -165,4 +185,6 @@ trait ResponseHandlerTrait
             'json'  => $data,
         ]);
     }
+
+
 }
