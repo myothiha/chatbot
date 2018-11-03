@@ -64,6 +64,52 @@ class ChatBot
         ],
     ];
 
+    private $resultNotFoundMessage = [
+        ApiConstant::MYANMAR3   => [
+            'yes'       => "မေးမည်။",
+            'no'        => 'မမေးလိုပါ။',
+            'message'   => [
+                "သင်ပေးပို့တဲ့ စကားလုံးနဲ့ သက်ဆိုင်တဲ့ အကြောင်းအရာကို မတွေ့ရှိပါ။",
+                "မေးခွန်းအား အပြည့်အစုံရေးသားပြီး မေးမြန်းလိုပါသလား။"
+            ],
+        ],
+        ApiConstant::ZAWGYI     => [
+            'yes'    => "ေမးမည္။",
+            'no'        => 'မေမးလိုပါ။',
+            'message'   => [
+                "သင္ေပးပို႔တဲ့ စကားလုံးနဲ႔ သက္ဆိုင္တဲ့ အေၾကာင္းအရာကို မေတြ႕ရွိပါ။",
+                "ေမးခြန္းအား အျပည့္အစုံေရးသားၿပီး ေမးျမန္းလိုပါသလား။",
+            ],
+        ],
+        ApiConstant::ENGLISH    => [
+            'yes'       => 'Yes',
+            'no'        => 'no',
+            'message'   => 'Content not found.',
+            'Do you want to write and submit a question for review?',
+        ],
+    ];
+
+    public $resultFoundMessage = [
+        ApiConstant::MYANMAR3   => "သင်ပေးပို့တဲ့ စကားလုံးနဲ့ သက်ဆိုင်တဲ့ အကြောင်းအရာတွေကတော့",
+        ApiConstant::ZAWGYI     => "သင္ေပးပို႔တဲ့ စကားလုံးနဲ႔ သက္ဆိုင္တဲ့ အေၾကာင္းအရာေတြကေတာ့",
+        ApiConstant::ENGLISH    => "These might be what you are looking for -",
+    ];
+
+    public $recordMessage = [
+        ApiConstant::MYANMAR3   => [
+            "သင့်မေးခွန်းကို ကျွန်မ မှတ်သားထားပြီဖြစ်တဲ့အတွက် အမြန်ဆုံးအကြောင်းပြန်ပေးမှာဖြစ်ပါတယ်။",
+            "ကောင်းသောနေ့လေး ဖြစ်ပါစေ။"
+        ],
+        ApiConstant::ZAWGYI     => [
+            "သင့္ေမးခြန္းကို ကြၽန္မ မွတ္သားထားၿပီျဖစ္တဲ့အတြက္ အျမန္ဆုံးအေၾကာင္းျပန္ေပးမွာျဖစ္ပါတယ္။",
+            "ေကာင္းေသာေန႔ေလး ျဖစ္ပါေစ။"
+        ],
+        ApiConstant::ENGLISH    => [
+            "Your question has been duly noted. I will  provide an answer as soon as possible.",
+            "Have a good day."
+        ],
+    ];
+
     public function __construct()
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
@@ -75,6 +121,11 @@ class ChatBot
         return str_replace("%username", $this->fbUser->name, $text);
     }
 
+    public function getRecordMessage()
+    {
+        return $this->recordMessage[$this->fbUser->language];
+    }
+
     public function getUserInputText()
     {
         return $this->askUserInput[$this->fbUser->language];
@@ -83,6 +134,16 @@ class ChatBot
     public function getAskAdminMenus()
     {
         return $this->askAdminManually[$this->fbUser->language];
+    }
+
+    public function getResultNotFoundMessage()
+    {
+        return $this->resultNotFoundMessage[$this->fbUser->language];
+    }
+
+    public function getResultFoundMessage()
+    {
+        return $this->resultFoundMessage[$this->fbUser->language];
     }
 
     public function getEndMessage()
@@ -132,22 +193,27 @@ class ChatBot
         $this->text([$this->getUserInputText()]);
     }
 
-    public function askManually()
+    public function resultNotFound()
     {
+        $message = $this->getResultNotFoundMessage();
         $buttons = [
             [
                 "type" => "postback",
-                "title" => "Yes",
+                "title" => $message['yes'],
                 "payload" => "yes",
             ],
             [
                 "type" => "postback",
-                "title" => "No",
+                "title" => $message['no'],
                 "payload" => "no",
             ],
         ];
 
-        $this->postBackButton($buttons, "Do you Want to ask admin manually ? ");
+        $message1 = $message["message"][0];
+
+        $this->reply([$message1], ApiConstant::TEXT);
+
+        $this->postBackButton($buttons, $message["message"][1]);
     }
 
     public function endMessage($prevQuestionId)
@@ -168,6 +234,16 @@ class ChatBot
         ];
 
         $this->postBackButton($buttons, $message["message"]);
+    }
+
+    public function resultFound()
+    {
+        $this->reply([$this->getResultFoundMessage()], ApiConstant::TEXT);
+    }
+
+    public function recordMessage()
+    {
+        $this->reply($this->getRecordMessage(), ApiConstant::TEXT);
     }
 
 }

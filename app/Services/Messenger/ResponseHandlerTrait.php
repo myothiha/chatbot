@@ -168,9 +168,8 @@ trait ResponseHandlerTrait
 
     private function sendRequest($requestType, $data)
     {
-        $this->senderAction('mark_seen');
         $this->senderAction('typing_on');
-        sleep(2);
+        sleep(1);
 
         $this->httpRequest($requestType, $data);
     }

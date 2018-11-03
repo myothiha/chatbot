@@ -63,13 +63,16 @@ class ChatBotController extends Controller
         // Checks this is an event from a page subscription
         if ($request->object == 'page' AND json_encode($senderId)!='null' AND $senderId!=422359484916418) {
 
-            Log::debug("ddddd".json_encode($senderId));
+            //Log::debug("ddddd".json_encode($senderId));
 
             $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
 
             $this->chatBot->setFbUser($fbUser);
 
+             $this->chatBot->senderAction('mark_seen');
+
             if ($payload = $this->getPayload($request)) {
+                Log::debug($payload);
                 if ($payload == "start") {
                     $this->askToChooseLanguage($fbUser);
                 } else if ($this->onSelectedLanguage($payload)) {
@@ -104,14 +107,16 @@ class ChatBotController extends Controller
 
                     //3 Turn off Conversation Mode
                     $fbUser->conversationMode(ApiConstant::CONVERSATION_OFF);
-                    $this->chatBot->reply(["Your message have been sent to admin and will be replied shortly."], ApiConstant::TEXT);
+                    $this->chatBot->recordMessage();
                 } else {
                     $result = $this->questionRepo->search($message, $currentLanguage);
 
                     if ($result->isEmpty()) {
                         // 1 . Ask user if he want to ask admin manual Yes or No
-                        $this->chatBot->askManually();
+                        $this->chatBot->resultNotFound();
                     } else {
+                        //Reply a message result have been found
+                        $this->chatBot->resultFound();
                         // 1 . Map Result into gallery view
                         $data = $this->questionRepo->transform($result, ApiConstant::GALLERY, $currentLanguage);
                         // 2 . show result to user
@@ -229,7 +234,10 @@ class ChatBotController extends Controller
         $this->chatBot->setFbUser($fbUser);
         $fbUser->save();
 
-        $this->response($fbUser->language, 52);
+//        $this->response($fbUser->language, 28);
+        $this->chatBot->resultNotFound();
+        $this->chatBot->resultFound();
+        $this->chatBot->recordMessage();
         dd('stop');
 //        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());
