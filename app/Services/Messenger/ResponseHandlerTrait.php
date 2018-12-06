@@ -27,7 +27,6 @@ trait ResponseHandlerTrait
 
     public function getProfile()
     {
-//        dd($this->fbUser->psid);
         $profile = $this->client->request("GET", "/{$this->fbUser->psid}", [
             'query'  => [
                 'access_token'  => ApiConstant::ACCESS_TOKEN,

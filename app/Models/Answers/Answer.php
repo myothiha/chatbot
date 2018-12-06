@@ -20,6 +20,11 @@ class Answer extends BaseModel implements MessengerApiInterface
         ],
     ];
 
+    public function scopeGetAnswers($query, $questionId)
+    {
+        return $query->where('question_id', $questionId);
+    }
+
     public function question()
     {
         return $this->belongsTo('App\Models\Questions\Question', 'question_id');

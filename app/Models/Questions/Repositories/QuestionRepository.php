@@ -23,6 +23,11 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
         return Question::subQuestions($parentId)->get();
     }
 
+    function getVisibleQuestions($parentId)
+    {
+        return $this->model->getSubQuestions($parentId)->visible();
+    }
+
     function get($questionId)
     {
         return Question::find($questionId);
@@ -79,7 +84,7 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
 
     public function prepare($questionId, $type, $lang)
     {
-        $subQuestions = $this->getSubQuestions($questionId);
+        $subQuestions = $this->getVisibleQuestions($questionId)->get();
 
         return $this->transform($subQuestions, $type, $lang);
     }
@@ -120,7 +125,7 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
             }
             $question = $question->parent;
             $count++;
-        } while($count < $levelToJump);
+        } while(true);
 
         return $question->id;
     }

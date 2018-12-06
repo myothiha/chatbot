@@ -27,6 +27,11 @@ class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
         return $this->model->where(['question_id' => $questionId])->get();
     }
 
+    function getVisibleAnswers($questionId)
+    {
+        return $this->model->getAnswers($questionId)->visible();
+    }
+
     function create(Request $request, $questionId)
     {
         if ($request->file('image')) {
@@ -81,7 +86,7 @@ class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
 
     public function prepare($questionId, $type, $lang)
     {
-        $answers = $this->getAnswers($questionId);
+        $answers = $this->getVisibleAnswers($questionId)->get();
         return $this->transform($answers, $type, $lang);
     }
 }

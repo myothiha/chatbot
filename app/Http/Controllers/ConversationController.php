@@ -34,6 +34,8 @@ class ConversationController extends Controller
 
         $currentFbUser = ($fbUser ?? $fbUsers->first()) ?? $seenFbUsers->first();
 
+//        dd($currentFbUser->profilePic);
+
 //        dd($currentFbUser->conversations->last()->replies->toArray());
 
 //        dd($fbUsers->toArray());

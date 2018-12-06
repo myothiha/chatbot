@@ -32,6 +32,11 @@ class Question extends BaseModel implements MessengerApiInterface
         return $this->belongsTo('App\Models\Questions\Question', 'parent_id');
     }
 
+    public function scopeGetSubQuestions($query, $parentId)
+    {
+        return $query->where('parent_id', $parentId);
+    }
+
     public function getParentList()
     {
         $collection = collect([]);

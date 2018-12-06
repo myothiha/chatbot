@@ -7,25 +7,21 @@ use App\FbUser;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
-use App\Models\Questions\Question;
 use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as UriRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request as UriRequest;
 
 class ChatBotController extends Controller
 {
-
     use RequestHandlerTrait;
 
     private $chatBot;
     private $questionRepo;
     private $answerRepo;
-
-
 
     public function __construct(ChatBot $chatBot, QuestionRepositoryInterface $questionRepository, AnswerRepositoryInterface $answerRepository)
     {
@@ -235,10 +231,13 @@ class ChatBotController extends Controller
         $fbUser->save();
 
 //        $this->response($fbUser->language, 28);
+
+        $this->response('zg', 0);
+        dd('hi');
         $this->chatBot->resultNotFound();
         $this->chatBot->resultFound();
         $this->chatBot->recordMessage();
-        dd('stop');
+
 //        $this->chatBot->reply(['hi hello how are you'], ApiConstant::TEXT);
 //        dd($this->chatBot->getFbUser()->toArray());
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Services\Messenger\ApiConstant;
+use App\Services\Messenger\ChatBot;
 use Illuminate\Database\Eloquent\Model;
 
 class FbUser extends Model
@@ -23,6 +24,20 @@ class FbUser extends Model
     public function getNameAttribute()
     {
         return $this->firstName . " " . $this->lastName;
+    }
+
+    public function getProfilePicAttribute($value)
+    {
+        $lastUpdate = $this->updated_at->diff(now())->days;
+
+        if ($lastUpdate > 15)
+        {
+            $chatbot = new ChatBot();
+            $chatbot->setFbUser($this);
+            $chatbot->getProfile();
+        }
+
+        return $value;
     }
 
     public function saveProfileData($profile)
