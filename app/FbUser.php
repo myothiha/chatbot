@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 class FbUser extends Model
 {
 
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'active_at',
+    ];
+
     protected $fillable = ['psid'];
 
     public function scopeNotSeen($query)
