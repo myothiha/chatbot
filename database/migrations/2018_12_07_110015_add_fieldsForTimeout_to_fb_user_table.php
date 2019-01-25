@@ -14,7 +14,7 @@ class AddFieldsForTimeoutToFbUserTable extends Migration
     public function up()
     {
         Schema::table('fb_users', function (Blueprint $table) {
-            $table->timestamp('active_at')->nullable();
+            $table->timestamp('active_at')->default(now());
             $table->tinyInteger('timeout')->default(0);
             $table->index(['active_at', 'timeout']);
         });

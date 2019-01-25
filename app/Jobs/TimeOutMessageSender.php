@@ -10,33 +10,31 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class TimeOutMessageProcessor implements ShouldQueue
+class TimeOutMessageSender implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $fbUser;
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * @param FbUser $fbUser
      */
-    public function __construct()
+    public function __construct(FbUser $fbUser)
     {
+        $this->fbUser = $fbUser;
     }
 
     /**
      * Execute the job.
      *
+     * @param ChatBot $chatBot
      * @return void
      */
-    public function handle()
+    public function handle(ChatBot $chatBot)
     {
-        $fbUsers = FbUser::active()->get();
-
-        $fbUsers->each(function ($item, $key) {
-            if ( $item->isTimeout() ) {
-                TimeOutMessageSender::dispatch($item);
-            }
-        });
+        $chatBot->setFbUser($this->fbUser);
+        $chatBot->sentTimeOutMessage();
     }
 }

@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class FbUser extends Model
 {
 
+    const TIMEOUT_TRUE = 0;
+    const TIMEOUT_FALSE = 0;
+    const TIMEOUT_DURATION_IN_MINUTES = 3;
+
+    const CONVERSATION_SEEN = 1;
+    const CONVERSATION_UNSEEN = 0;
+
     protected $dates = [
         'created_at',
         'updated_at',
@@ -19,12 +26,22 @@ class FbUser extends Model
 
     public function scopeNotSeen($query)
     {
-        return $query->where('seen', 0);
+        return $query->where('seen', self::CONVERSATION_UNSEEN);
     }
 
     public function scopeSeen($query)
     {
-        return $query->where('seen', 1);
+        return $query->where('seen', self::CONVERSATION_SEEN);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('timeout', self::TIMEOUT_FALSE);
+    }
+
+    public function isTimeout() : bool
+    {
+        return $this->active_at->diffInMinutes(now()) > self::TIMEOUT_DURATION_IN_MINUTES;
     }
 
     public function getNameAttribute()

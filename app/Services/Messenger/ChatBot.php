@@ -110,6 +110,12 @@ class ChatBot
         ],
     ];
 
+    public $timeout = [
+        ApiConstant::MYANMAR3   => "မင်္ဂလာပါ။ %username မယ်ရွှေ့ပြောင်းကို လာရောက်အသုံးပြုတဲ့အတွက် ကျေးဇူးတင်ပါတယ်။ လူကြီမင်းလည်း ကျွန်မ “မယ်ရွှေ့ပြောင်း” နဲ့ စကားပြောရတာ အဆင်ပြေခဲ့မယ်လို့ ယုံကြည်ပါတယ်။ သတင်းအချက်အလက်များကို ထပ်မံရှာဖွေလိုလျှင် မယ်ရွှေ့ပြောင်းသို့ ထပ်မံပြန်လာပြီး မေးမြန်းနိုင်ပါသည်။ ",
+        ApiConstant::ZAWGYI     => "မဂၤလာပါ။ %username မယ္ေရႊ႕ေျပာင္းကို လာေရာက္အသံုးျပဳတဲ့အတြက္ ေက်းဇူးတင္ပါတယ္။ လူႀကီမင္းလည္း ကၽြန္မ “မယ္ေရႊ႕ေျပာင္း” နဲ႔ စကားေျပာရတာ အဆင္ေျပခဲ့မယ္လို႔ ယံုၾကည္ပါတယ္။ သတင္းအခ်က္အလက္မ်ားကို ထပ္မံရွာေဖြလိုလွ်င္ မယ္ေရႊ႕ေျပာင္းသို႔ ထပ္မံျပန္လာၿပီး ေမးျမန္းႏိုင္ပါသည္။ ",
+        ApiConstant::ENGLISH    => "Hello %username. Thank you for using Miss Migration! It was great talking to you. Come back and message me again if you would like to find more information."
+    ];
+
     public function __construct()
     {
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
@@ -118,6 +124,12 @@ class ChatBot
     public function getGreetingText()
     {
         $text = $this->greeting[$this->fbUser->language];
+        return str_replace("%username", $this->fbUser->name, $text);
+    }
+
+    public function getTimeoutText()
+    {
+        $text = $this->timeout[$this->fbUser->language];
         return str_replace("%username", $this->fbUser->name, $text);
     }
 
@@ -186,6 +198,11 @@ class ChatBot
     public function greetUser()
     {
         $this->text([$this->getGreetingText()]);
+    }
+
+    public function sentTimeOutMessage()
+    {
+        $this->text([$this->getTimeoutText()]);
     }
 
     public function askUserToInputQuestion()

@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\TimeOutMessageProcessor;
+use App\Jobs\TimeOutMessageSender;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('queue:work')
+            ->everyMinute()->withoutOverlapping(15);
+        $schedule->job(new TimeOutMessageProcessor())->everyMinute()->withoutOverlapping(20);
         // $schedule->command('inspire')
         //          ->hourly();
     }
