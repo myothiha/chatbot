@@ -9,6 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class TimeOutMessageProcessor implements ShouldQueue
 {
@@ -31,6 +32,7 @@ class TimeOutMessageProcessor implements ShouldQueue
      */
     public function handle()
     {
+        Log::debug('TimeOutMessage Processing');
         $fbUsers = FbUser::active()->get();
 
         $fbUsers->each(function ($item, $key) {

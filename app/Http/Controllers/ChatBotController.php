@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conversation;
 use App\FbUser;
+use App\Jobs\TimeOutMessageProcessor;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
@@ -11,6 +12,7 @@ use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as UriRequest;
@@ -59,13 +61,15 @@ class ChatBotController extends Controller
         // Checks this is an event from a page subscription
         if ($request->object == 'page' AND json_encode($senderId)!='null' AND $senderId!=422359484916418) {
 
-            //Log::debug("ddddd".json_encode($senderId));
+            Log::debug("ddddd". json_encode($request->toArray()) );
 
             $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
 
             $this->chatBot->setFbUser($fbUser);
 
-             $this->chatBot->senderAction('mark_seen');
+            $this->setUserActive();
+
+            $this->chatBot->senderAction('mark_seen');
 
             if ($payload = $this->getPayload($request)) {
                 Log::debug($payload);
@@ -221,9 +225,18 @@ class ChatBotController extends Controller
         return $payload == "no";
     }
 
+    private function setUserActive()
+    {
+        $this->chatBot->getFbUser()->setTimeout(FbUser::TIMEOUT_FALSE);
+        $this->chatBot->getFbUser()->active_at = Carbon::now();
+        $this->chatBot->getFbUser()->save();
+    }
+
     public function test()
     {
-        $fbUser = FbUser::firstOrNew(['psid' => '1889983827706459']);
+        TimeOutMessageProcessor::dispatch();
+
+        /*$fbUser = FbUser::firstOrNew(['psid' => '1889983827706459']);
 
 //        dd($fbUser->conversations);
         $fbUser->language = 'zg';
@@ -249,7 +262,7 @@ class ChatBotController extends Controller
 
         $this->chatBot->getFbUser()->conversationMode(ApiConstant::CONVERSATION_OFF);
         $result = $this->questionRepo->search('အလုပ္', 'zg');
-        $json = $this->questionRepo->transform($result, ApiConstant::GALLERY, ApiConstant::ZAWGYI);
+        $json = $this->questionRepo->transform($result, ApiConstant::GALLERY, ApiConstant::ZAWGYI);*/
 //        dd($json->toArray());
     }
 
