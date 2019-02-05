@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class FbUser extends Model
 {
 
-    const TIMEOUT_TRUE = 0;
+    const TIMEOUT_TRUE = 1;
     const TIMEOUT_FALSE = 0;
-    const TIMEOUT_DURATION_IN_MINUTES = 3;
+    const TIMEOUT_DURATION_IN_MINUTES = 1;
 
     const CONVERSATION_SEEN = 1;
     const CONVERSATION_UNSEEN = 0;
@@ -42,6 +42,12 @@ class FbUser extends Model
     public function isTimeout() : bool
     {
         return $this->active_at->diffInMinutes(now()) > self::TIMEOUT_DURATION_IN_MINUTES;
+    }
+
+    public function setTimeout($value)
+    {
+        $this->timeout = $value;
+        $this->save();
     }
 
     public function getNameAttribute()

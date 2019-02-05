@@ -169,7 +169,7 @@ class ChatBot
         $fbUser->firstName ?? $this->getProfile();
     }
 
-    public function getFbUser()
+    public function getFbUser() : FbUser
     {
         return $this->fbUser;
     }
@@ -203,6 +203,7 @@ class ChatBot
     public function sentTimeOutMessage()
     {
         $this->text([$this->getTimeoutText()]);
+        $this->fbUser->setTimeout(FbUser::TIMEOUT_TRUE);
     }
 
     public function askUserToInputQuestion()
