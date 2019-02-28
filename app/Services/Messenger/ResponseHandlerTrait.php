@@ -30,7 +30,7 @@ trait ResponseHandlerTrait
         $profile = $this->client->request("GET", "/{$this->fbUser->psid}", [
             'query'  => [
                 'access_token'  => ApiConstant::ACCESS_TOKEN,
-                'fields'        => 'id,name,first_name,last_name,profile_pic',
+                'fields'        => 'id,name,first_name,last_name,profile_pic,locale,timezone,gender',
                 'scrape'        => "true",
             ],
         ]);
