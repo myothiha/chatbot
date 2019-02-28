@@ -11,12 +11,12 @@ class Answer extends BaseModel implements MessengerApiInterface
 
     const IMAGE_SCALE = [
         'small' => [
-            'width' => '300',
-            'height' => '140'
+            'width' => '720',
+            'height' => '460'
         ],
         'large' => [
-            'width' => '500',
-            'height' => '260'
+            'width' => '1920',
+            'height' => '1080'
         ],
     ];
 

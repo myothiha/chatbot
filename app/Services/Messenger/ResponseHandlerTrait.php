@@ -86,6 +86,23 @@ trait ResponseHandlerTrait
         }
     }
 
+    private function asyncText($messages)
+    {
+        foreach ($messages as $message)
+        {
+            $data = [
+                "recipient" => [
+                    "id" => $this->fbUser->psid,
+                ],
+                "message" => [
+                    "text" => $message
+                ],
+            ];
+
+            $this->sendAsyncRequest('POST', $data);
+        }
+    }
+
     private function quickReply($messages, $text = null)
     {
         $data = [
@@ -173,6 +190,11 @@ trait ResponseHandlerTrait
         $this->httpRequest($requestType, $data);
     }
 
+    private function sendAsyncRequest($requestType, $data)
+    {
+        $this->httpAsyncRequest($requestType, $data);
+    }
+
     private function httpRequest($requestType, $data)
     {
         $this->client->request($requestType, ApiConstant::MESSAGE, [
@@ -184,5 +206,15 @@ trait ResponseHandlerTrait
         ]);
     }
 
+    private function httpAsyncRequest($requestType, $data)
+    {
+        $this->client->requestAsync($requestType, ApiConstant::MESSAGE, [
+            'query'  => [
+                'access_token' => ApiConstant::ACCESS_TOKEN,
+                'scrape'        => "true",
+            ],
+            'json'  => $data,
+        ]);
+    }
 
 }

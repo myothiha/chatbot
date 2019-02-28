@@ -3,12 +3,11 @@
 namespace App\Jobs;
 
 use App\FbUser;
-use App\Services\Messenger\ChatBot;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 class TimeOutMessageProcessor implements ShouldQueue
@@ -30,14 +29,15 @@ class TimeOutMessageProcessor implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(ChatBot $chatBot)
     {
         Log::debug('TimeOutMessage Processing');
         $fbUsers = FbUser::active()->get();
 
-        $fbUsers->each(function ($item, $key) {
+        $fbUsers->each(function ($item, $key) use ($chatBot) {
             if ( $item->isTimeout() ) {
-                TimeOutMessageSender::dispatch($item);
+                $chatBot->setFbUser($item);
+                $chatBot->sentTimeOutMessage();
             }
         });
     }
