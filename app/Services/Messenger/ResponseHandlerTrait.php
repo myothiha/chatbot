@@ -10,6 +10,8 @@ namespace App\Services\Messenger;
 
 
 use App\FbUser;
+use Illuminate\Support\Facades\Log;
+use Psr\Http\Message\ResponseInterface;
 
 trait ResponseHandlerTrait
 {
@@ -208,13 +210,15 @@ trait ResponseHandlerTrait
 
     private function httpAsyncRequest($requestType, $data)
     {
-        $this->client->requestAsync($requestType, ApiConstant::MESSAGE, [
+        $promise = $this->client->requestAsync($requestType, ApiConstant::MESSAGE, [
             'query'  => [
                 'access_token' => ApiConstant::ACCESS_TOKEN,
                 'scrape'        => "true",
             ],
             'json'  => $data,
         ]);
+
+        $promise->wait();
     }
 
 }

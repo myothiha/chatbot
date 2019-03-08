@@ -29,15 +29,14 @@ class TimeOutMessageProcessor implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ChatBot $chatBot)
+    public function handle()
     {
         Log::debug('TimeOutMessage Processing');
         $fbUsers = FbUser::active()->get();
 
-        $fbUsers->each(function ($item, $key) use ($chatBot) {
+        $fbUsers->each(function ($item, $key) {
             if ( $item->isTimeout() ) {
-                $chatBot->setFbUser($item);
-                $chatBot->sentTimeOutMessage();
+                TimeOutMessageSender::dispatch($item);
             }
         });
     }

@@ -12,4 +12,5 @@ namespace App\Network\HttpClient;
 interface HttpClientInterface
 {
     function request($method, $uri, $param);
+    function requestAsync($method, $uri, $param);
 }

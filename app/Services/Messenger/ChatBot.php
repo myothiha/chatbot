@@ -16,7 +16,7 @@ class ChatBot
 
     use ResponseHandlerTrait;
 
-    private $client;
+    protected $client;
     private $fbUser;
 
     public $greeting = [
@@ -202,7 +202,7 @@ class ChatBot
 
     public function sentTimeOutMessage()
     {
-        $this->asyncText([$this->getTimeoutText()]);
+        $this->text([$this->getTimeoutText()]);
         $this->fbUser->setTimeout(FbUser::TIMEOUT_TRUE);
     }
 
