@@ -18,7 +18,7 @@ class GuzzleHttp implements HttpClientInterface
 
     private $guzzleClient;
 
-    public function __construct($baseUri, $timeout = 5.0)
+    public function __construct($baseUri, $timeout = 10.0)
     {
         $this->guzzleClient = new Client([
             // Base URI is used with relative requests
@@ -38,5 +38,17 @@ class GuzzleHttp implements HttpClientInterface
     public function request($method, $uri, $param = [])
     {
         return $this->guzzleClient->request($method, $uri, $param);
+    }
+
+    /**
+     * @param $method
+     * @param $uri
+     * @param array $param
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    public function requestAsync($method, $uri, $param = [])
+    {
+        Log::debug('bbbbb');
+        return $this->guzzleClient->requestAsync($method, $uri, $param);
     }
 }

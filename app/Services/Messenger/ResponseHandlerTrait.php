@@ -10,6 +10,8 @@ namespace App\Services\Messenger;
 
 
 use App\FbUser;
+use Illuminate\Support\Facades\Log;
+use Psr\Http\Message\ResponseInterface;
 
 trait ResponseHandlerTrait
 {
@@ -83,6 +85,23 @@ trait ResponseHandlerTrait
             ];
 
             $this->sendRequest('POST', $data);
+        }
+    }
+
+    private function asyncText($messages)
+    {
+        foreach ($messages as $message)
+        {
+            $data = [
+                "recipient" => [
+                    "id" => $this->fbUser->psid,
+                ],
+                "message" => [
+                    "text" => $message
+                ],
+            ];
+
+            $this->sendAsyncRequest('POST', $data);
         }
     }
 
@@ -173,6 +192,11 @@ trait ResponseHandlerTrait
         $this->httpRequest($requestType, $data);
     }
 
+    private function sendAsyncRequest($requestType, $data)
+    {
+        $this->httpAsyncRequest($requestType, $data);
+    }
+
     private function httpRequest($requestType, $data)
     {
         $this->client->request($requestType, ApiConstant::MESSAGE, [
@@ -184,5 +208,17 @@ trait ResponseHandlerTrait
         ]);
     }
 
+    private function httpAsyncRequest($requestType, $data)
+    {
+        $promise = $this->client->requestAsync($requestType, ApiConstant::MESSAGE, [
+            'query'  => [
+                'access_token' => ApiConstant::ACCESS_TOKEN,
+                'scrape'        => "true",
+            ],
+            'json'  => $data,
+        ]);
+
+        $promise->wait();
+    }
 
 }

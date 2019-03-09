@@ -16,7 +16,7 @@ class ChatBot
 
     use ResponseHandlerTrait;
 
-    private $client;
+    protected $client;
     private $fbUser;
 
     public $greeting = [

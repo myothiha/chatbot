@@ -11,9 +11,8 @@
 |
 */
 
-
-
 Route::get('/webhook', 'ChatBotController@verify');
+
 Route::post('/webhook', 'ChatBotController@handle');
 
 Route::get('/login', 'LoginController@login')->name('login');
