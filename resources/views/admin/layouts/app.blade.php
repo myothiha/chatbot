@@ -12,6 +12,7 @@
 
     <!-- Custom Style -->
     <link href="/css/style.css" rel="stylesheet">
+    <link rel="icon" href="/img/logo.png" type="image/x-icon"/>
 
     <!-- Bootstrap core CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -71,10 +72,10 @@
 </header>--}}
 
 <!-- Page Content -->
-<div class="container">
+<div class="container content">
 
     <div class="row mt-4">
-        <h1 >
+        <h1>
             @yield('heading')
             <small>@yield('subheading')</small>
         </h1>
@@ -90,7 +91,7 @@
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Miss Migration {{ \Carbon\Carbon::now()->year }}</p>
     </div>
     <!-- /.container -->
 </footer>
