@@ -202,7 +202,7 @@ class ChatBot
 
     public function sentTimeOutMessage()
     {
-        $this->text([$this->getTimeoutText()]);
+        $this->asyncText([$this->getTimeoutText()]);
         $this->fbUser->setTimeout(FbUser::TIMEOUT_TRUE);
     }
 
