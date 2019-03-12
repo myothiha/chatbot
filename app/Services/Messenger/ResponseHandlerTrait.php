@@ -155,22 +155,26 @@ trait ResponseHandlerTrait
 
     private function gallery($messages)
     {
-        $data = [
-            "recipient" => [
-                "id" => $this->fbUser->psid,
-            ],
-            "message" => [
-                "attachment" => [
-                    "type"      => "template",
-                    "payload"   => [
-                        "template_type" => "generic",
-                        "elements" => $messages,
+        $msgCollections = collect($messages);
+
+        foreach($msgCollections->chunk(10) as $messages) {
+            $data = [
+                "recipient" => [
+                    "id" => $this->fbUser->psid,
+                ],
+                "message" => [
+                    "attachment" => [
+                        "type"      => "template",
+                        "payload"   => [
+                            "template_type" => "generic",
+                            "elements" => $messages->toArray(),
+                        ],
                     ],
                 ],
-            ],
-        ];
+            ];
 
-        $this->sendRequest('POST', $data);
+            $this->sendRequest('POST', $data);
+        }
     }
 
     public function senderAction($action) {

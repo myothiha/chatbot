@@ -84,8 +84,10 @@ class ChatBot
         ApiConstant::ENGLISH    => [
             'yes'       => 'Yes',
             'no'        => 'no',
-            'message'   => 'Content not found.',
-            'Do you want to write and submit a question for review?',
+            'message'   => [
+                'Content not found.',
+                'Do you want to write and submit a question for review?',
+            ],
         ],
     ];
 
