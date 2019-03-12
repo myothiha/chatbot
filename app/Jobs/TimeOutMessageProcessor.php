@@ -34,9 +34,9 @@ class TimeOutMessageProcessor implements ShouldQueue
         Log::debug('TimeOutMessage Processing');
         $fbUsers = FbUser::active()->get();
 
-        $fbUsers->each(function ($item, $key) {
-            if ( $item->isTimeout() ) {
-                TimeOutMessageSender::dispatch($item);
+        $fbUsers->each(function (FbUser $fbUser, $key) {
+            if ( $fbUser->isTimeout() ) {
+                TimeOutMessageSender::dispatch($fbUser);
             }
         });
     }
