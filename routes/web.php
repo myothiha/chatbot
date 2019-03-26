@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/logout', 'LoginController@logout');
 
+    Route::resource('users', 'UserController');
+
     Route::get('/', 'QuestionController@index');
     Route::get('/questions/{parentId?}',                        'QuestionController@index');
     Route::get('/questions/{parentId}/create',                  'QuestionController@create');
@@ -49,5 +51,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/answerTypes/{questionId}', 'AnswerTypeController@store');
 
     Route::get('/test/', 'ChatBotController@test');
+    Route::get('broadcast', 'BroadcastController@getBroadcast');
+    Route::post('broadcast', 'BroadcastController@broadcast');
 });
 

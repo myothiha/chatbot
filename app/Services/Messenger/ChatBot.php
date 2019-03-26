@@ -123,6 +123,41 @@ class ChatBot
         $this->client = new GuzzleHttp(ApiConstant::BASE_URL);
     }
 
+    public function creativeMessage($message)
+    {
+        $response = $this->client->request('POST', ApiConstant::CREATIVE, [
+            'query'  => [
+                'access_token' => ApiConstant::ACCESS_TOKEN,
+            ],
+            "json" => [
+                'messages'  => [
+                    [
+                        'text' => $message
+                    ],
+                ],
+            ]
+        ]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function broadcast($message, $notiType = "REGULAR")
+    {
+        $creativeId = $this->creativeMessage($message)->message_creative_id;
+
+        $this->client->request('POST', ApiConstant::BROADCAST, [
+            'query'  => [
+                'access_token' => ApiConstant::ACCESS_TOKEN,
+            ],
+            "json" => [
+                'message_creative_id'   => $creativeId,
+                'notification_type'     => $notiType,
+                'messaging_type'        => "MESSAGE_TAG",
+                "tag"                   => "NON_PROMOTIONAL_SUBSCRIPTION",
+            ]
+        ]);
+    }
+
     public function getGreetingText()
     {
         $text = $this->greeting[$this->fbUser->language];

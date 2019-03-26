@@ -15,6 +15,10 @@ class ApiConstant
 
     const MESSAGE = "/v2.6/me/messages";
 
+    const CREATIVE = "/v2.11/me/message_creatives";
+
+    const BROADCAST = "/v2.11/me/broadcast_messages";
+
     const ACCESS_TOKEN = "EAAC8bkI13yUBAO92eHRVhtZAqbP6yWUbh6dW06TFSVlwo8372kPYZBYgNullVNdgXe2uWlkZCGqDZBwGeBN9VYR5IvkESvQenkHj8Hy8u9C9ZB977vZAcBm6dooygFyDy1BJpf6yiUlLskzEVBDNcZBWCZCL7y2dEZAdNuJKL1GN3z6bSTZCOqcNg7";
 
     const ZAWGYI = "zg";

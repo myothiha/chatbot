@@ -35,6 +35,7 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
 
     function create(Request $request, $parentId)
     {
+
         if ($request->file('image')) {
             $imagePath = ImageUploader::upload($request->image, 'uploads/', Answer::IMAGE_SCALE);
         } else {

@@ -38,7 +38,6 @@ trait ResponseHandlerTrait
         ]);
         
         $data = $profile->getBody()->getContents();
-//        dd(json_decode($data));
         $this->fbUser->saveProfileData(json_decode($data));
     }
 
