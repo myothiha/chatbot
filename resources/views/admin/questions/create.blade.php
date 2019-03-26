@@ -35,25 +35,25 @@
 
         {{ csrf_field() }}
 
-        <div class="form-group row">
+        {{--<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Trace Qid</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="traceQid" name="traceQId" placeholder="Trace Qid">
             </div>
-        </div>
+        </div>--}}
 
-        <div class="form-group row">
+        {{--<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Trace Pid</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="tracePId" name="tracePId" placeholder="Trace Pid">
             </div>
-        </div>
+        </div>--}}
 
         <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Button (Myanmar 3)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_mm3" name="button_mm3"
-                       placeholder="Text want to display on Button">
+                       placeholder="Text want to display on Button" required>
             </div>
         </div>
 
@@ -61,7 +61,7 @@
             <label for="type" class="col-sm-2 col-form-label">Message (Myanmar 3)</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="message_mm3" rows="10" name="message_mm3"
-                          placeholder="Message want to display"></textarea>
+                          placeholder="Message want to display" required></textarea>
             </div>
         </div>
 
@@ -69,7 +69,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (Zawgyi)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_zg" name="button_zg"
-                       placeholder="Text want to display on Button">
+                       placeholder="Text want to display on Button" required>
             </div>
         </div>
 
@@ -77,7 +77,7 @@
             <label for="type" class="col-sm-2 col-form-label">Message (Zawgyi)</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="message_zg" rows="10" name="message_zg"
-                          placeholder="Message want to display"></textarea>
+                          placeholder="Message want to display" required></textarea>
             </div>
         </div>
 
@@ -85,7 +85,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (English)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_en" name="button_en"
-                       placeholder="Text want to display on Button">
+                       placeholder="Text want to display on Button" required>
             </div>
         </div>
 
@@ -93,7 +93,7 @@
             <label for="type" class="col-sm-2 col-form-label">Message (English)</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="message_en" rows="10" name="message_en"
-                          placeholder="Message want to display"></textarea>
+                          placeholder="Message want to display" required></textarea>
             </div>
         </div>
 
