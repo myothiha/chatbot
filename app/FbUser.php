@@ -5,10 +5,11 @@ namespace App;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use mysql_xdevapi\Exception;
 
 class FbUser extends Model
 {
-
     const TIMEOUT_TRUE = 1;
     const TIMEOUT_FALSE = 0;
     const TIMEOUT_DURATION_IN_MINUTES = 1;
@@ -39,7 +40,7 @@ class FbUser extends Model
         return $query->where('timeout', self::TIMEOUT_FALSE);
     }
 
-    public function isTimeout() : bool
+    public function isTimeout(): bool
     {
         return $this->active_at->diffInMinutes(now()) > self::TIMEOUT_DURATION_IN_MINUTES;
     }
@@ -53,20 +54,6 @@ class FbUser extends Model
     public function getNameAttribute()
     {
         return $this->firstName . " " . $this->lastName;
-    }
-
-    public function getProfilePicAttribute($value)
-    {
-        $lastUpdate = $this->updated_at->diff(now())->days;
-
-        if ($lastUpdate > 15)
-        {
-            $chatbot = new ChatBot();
-            $chatbot->setFbUser($this);
-            $chatbot->getProfile();
-        }
-
-        return $value;
     }
 
     public function saveProfileData($profile)

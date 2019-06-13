@@ -24,6 +24,7 @@ class ConversationController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param FbUser|null $fbUser
      * @return \Illuminate\Http\Response
      */
     public function index(FbUser $fbUser = null)
@@ -41,6 +42,8 @@ class ConversationController extends Controller
 //        dd($fbUsers->toArray());
 
 //        dd($fbUsers->first()->conversations->last()->updated_at->diffForHumans());
+
+//        dd(FbUser::find(17)->profilePic);
 
         return view('admin.conversations.index', [
             'fbUsers'       => $fbUsers,

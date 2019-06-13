@@ -38,7 +38,7 @@
 
         <input type="hidden" name="_method" value="PUT" />
 
-        <div class="form-group row">
+        {{--<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Trace Aid</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="traceQid"rows="10" name="traceAId" placeholder="Trace Aid" value="{{ $answer->traceAId }}">
@@ -51,13 +51,13 @@
                 <input type="text" class="form-control" id="button_mm3" name="button_mm3" value="{{ $answer->button_mm3 }}"
                        placeholder="Text want to display on Button">
             </div>
-        </div>
+        </div>--}}
 
         <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Message (Myanmar 3)</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="message_mm3" rows="10" name="message_mm3"
-                          placeholder="Message want to display">{{ $answer->message_mm3 }}</textarea>
+                          placeholder="Message want to display" required>{{ $answer->message_mm3 }}</textarea>
             </div>
         </div>
 
@@ -65,7 +65,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (Zawgyi)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_zg" name="button_zg" value="{{ $answer->button_zg }}"
-                       placeholder="Text want to display on Button">
+                       placeholder="Text want to display on Button" required>
             </div>
         </div>
 
@@ -73,7 +73,7 @@
             <label for="type" class="col-sm-2 col-form-label">Message (Zawgyi)</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="message_zg" rows="10" name="message_zg"
-                          placeholder="Message want to display">{{ $answer->message_zg }}</textarea>
+                          placeholder="Message want to display" required>{{ $answer->message_zg }}</textarea>
             </div>
         </div>
 
@@ -81,7 +81,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (English)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_en" name="button_en" value="{{ $answer->button_en }}"
-                       placeholder="Text want to display on Button">
+                       placeholder="Text want to display on Button" required>
             </div>
         </div>
 
@@ -89,7 +89,7 @@
             <label for="type" class="col-sm-2 col-form-label">Message (English)</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="message_en" rows="10" name="message_en"
-                          placeholder="Message want to display">{{ $answer->message_en }}</textarea>
+                          placeholder="Message want to display" required>{{ $answer->message_en }}</textarea>
             </div>
         </div>
 

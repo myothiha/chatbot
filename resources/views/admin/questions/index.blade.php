@@ -23,7 +23,6 @@
                 @else
                     <a href="{{ action('QuestionController@index', $question->id) }}">{{ $question->message_en }}</a>
                 @endif
-
             </li>
         @endforeach
     </ol>
@@ -99,6 +98,7 @@
                            class="btn btn-outline-dark">Edit</a></td>
                     <td>
                         <form action="{{ action('AnswerController@destroy', [$parentId, $answer->id]) }}"
+                              onsubmit="return confirm('Are you sure you want to delete?')"
                               method="post">
 
                             {{ csrf_field() }}
@@ -184,6 +184,7 @@
                            class="btn btn-outline-dark">Edit</a></td>
                     <td>
                         <form action="{{ action('QuestionController@destroy', [$parentId, $question->id]) }}"
+                              onsubmit="return confirm('Are you sure you want to delete?')"
                               method="post">
 
                             {{ csrf_field() }}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conversation;
 use App\FbUser;
+use App\Jobs\ProcessAllFbUsersJob;
 use App\Jobs\TimeOutMessageProcessor;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
@@ -234,8 +235,24 @@ class ChatBotController extends Controller
 
     public function test()
     {
-        TimeOutMessageProcessor::dispatch();
+//        ProcessAllFbUsersJob::dispatch();
+        /*FbUser::chunk(200, function($users) {
+            foreach($users as $user) {
+                $lastUpdate = $user->updated_at->diff(now())->days;
 
+                    try {
+                        if( $lastUpdate > 10)
+                        {
+                            $chatbot = new ChatBot();
+                            $chatbot->setFbUser($user);
+                            $chatbot->getProfile();
+                        }
+                    } catch (\Exception $e) {
+                        Log::error($e->getMessage());
+                        continue;
+                    }
+            }
+        });*/
         /*$fbUser = FbUser::firstOrNew(['psid' => '1889983827706459']);
 
 //        dd($fbUser->conversations);

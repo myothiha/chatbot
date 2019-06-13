@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ProcessAllFbUsersJob;
 use App\Jobs\TimeOutMessageProcessor;
 use App\Jobs\TimeOutMessageSender;
 use Illuminate\Console\Scheduling\Schedule;
@@ -28,8 +29,12 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('queue:work --sansdaemon --tries=3')
             ->everyMinute();
+
         $schedule->job(new TimeOutMessageProcessor())
             ->everyFiveMinutes();
+
+        $schedule->job(new ProcessAllFbUsersJob())
+            ->daily();
         // $schedule->command('inspire')
         //          ->hourly();
     }

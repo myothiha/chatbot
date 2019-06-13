@@ -49,6 +49,7 @@
                     <td><p>{{ $user->email }}</p></td>
                     <td>
                         <form action="{{ action('UserController@destroy', $user->id) }}"
+                              onsubmit="return confirm('Are you sure you want to delete?')"
                               method="post">
 
                             {{ csrf_field() }}
