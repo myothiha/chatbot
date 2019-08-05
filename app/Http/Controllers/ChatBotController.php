@@ -71,6 +71,8 @@ class ChatBotController extends Controller
             $this->setUserActive();
 
             $this->chatBot->senderAction('mark_seen');
+            $this->chatBot->senderAction('typing_on');
+            sleep(1);
 
             if ($payload = $this->getPayload($request)) {
                 Log::debug($payload);
@@ -235,7 +237,7 @@ class ChatBotController extends Controller
 
     public function test()
     {
-//        ProcessAllFbUsersJob::dispatch();
+        ProcessAllFbUsersJob::dispatch();
         /*FbUser::chunk(200, function($users) {
             foreach($users as $user) {
                 $lastUpdate = $user->updated_at->diff(now())->days;

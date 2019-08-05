@@ -45,7 +45,7 @@ class UserProfileRefreshJob implements ShouldQueue
                 $chatbot->getProfile();
             }
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            Log::error("Profile Refresher Error" . $e->getMessage());
         }
     }
 }

@@ -14,7 +14,6 @@ class TimeOutMessageProcessor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     /**
      * Create a new job instance.
      *
@@ -22,6 +21,7 @@ class TimeOutMessageProcessor implements ShouldQueue
      */
     public function __construct()
     {
+
     }
 
     /**
@@ -34,7 +34,7 @@ class TimeOutMessageProcessor implements ShouldQueue
         Log::debug('TimeOutMessage Processing');
         $fbUsers = FbUser::active()->get();
 
-        $fbUsers->chunk(function (FbUser $fbUser, $key) {
+        $fbUsers->each(function (FbUser $fbUser, $key) {
             if ( $fbUser->isTimeout() ) {
                 TimeOutMessageSender::dispatch($fbUser);
             }
