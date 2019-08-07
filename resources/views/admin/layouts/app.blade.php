@@ -22,7 +22,6 @@
     <link href="/css/modern-business.css" rel="stylesheet">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -80,6 +79,8 @@
     <div class="row">
             @yield('breadcrumb')
     </div>
+
+    @include('partials.alert')
 
     @yield('content')
 </div>

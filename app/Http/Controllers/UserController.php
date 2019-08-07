@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -54,7 +55,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -81,7 +82,7 @@ class UserController extends Controller
     {
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password ? bcrypt($request->password) : $user->password ;
+        $user->password = $request->password ? bcrypt($request->password) : $user->password;
         $user->role = 0;
         $user->save();
 
@@ -97,6 +98,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if (User::all()->count() <= 1)
+        {
+            return redirect()->action('UserController@index')->with([
+                'type' => 'danger',
+                'message' => 'You cannot delete the last admin account.'
+            ]);
+        }
+        else if (Auth::user()->id == $user->id) {
+            return redirect()->action('UserController@index')->with([
+                'type' => 'danger',
+                'message' => 'You cannot delete your own account.'
+            ]);
+        }
         $user->delete();
         return redirect()->action('UserController@index');
     }

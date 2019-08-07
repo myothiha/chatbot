@@ -65,7 +65,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (Zawgyi)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_zg" name="button_zg" value="{{ $answer->button_zg }}"
-                       placeholder="Text want to display on Button" required>
+                       placeholder="Text want to display on Button">
             </div>
         </div>
 
@@ -81,7 +81,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (English)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_en" name="button_en" value="{{ $answer->button_en }}"
-                       placeholder="Text want to display on Button" required>
+                       placeholder="Text want to display on Button">
             </div>
         </div>
 

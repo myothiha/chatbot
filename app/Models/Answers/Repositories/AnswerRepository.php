@@ -17,6 +17,12 @@ use Illuminate\Http\Request;
 class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
 {
 
+    const DEFAULT_BUTTON_TEXT = [
+        "mm3" => "ရွေးချယ်ပါ",
+        "zg" => "ေရြးခ်ယ္ပါ",
+        "en" => "Choose"
+    ];
+
     public function __construct(Answer $answer)
     {
         parent::__construct($answer);
@@ -43,11 +49,11 @@ class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
         $answer = new Answer();
         $answer->question_id = $questionId;
         $answer->traceAId = $request->traceAId;
-        $answer->button_mm3 = $request->button_mm3;
+        $answer->button_mm3 = $request->button_mm3 ?? self::DEFAULT_BUTTON_TEXT["mm3"];
         $answer->message_mm3 = $request->message_mm3;
-        $answer->button_zg = $request->button_zg;
+        $answer->button_zg = $request->button_zg ?? self::DEFAULT_BUTTON_TEXT["zg"];
         $answer->message_zg = $request->message_zg;
-        $answer->button_en = $request->button_en;
+        $answer->button_en = $request->button_en ?? self::DEFAULT_BUTTON_TEXT["en"];
         $answer->message_en = $request->message_en;
         $answer->status = $request->type;
         $answer->image = $imagePath;
@@ -67,11 +73,11 @@ class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
 
         $answer->question_id = $questionId;
         $answer->traceAId = $request->traceAId;
-        $answer->button_mm3 = $request->button_mm3;
+        $answer->button_mm3 = $request->button_mm3 ?? self::DEFAULT_BUTTON_TEXT["mm3"];
         $answer->message_mm3 = $request->message_mm3;
-        $answer->button_zg = $request->button_zg;
+        $answer->button_zg = $request->button_zg ?? self::DEFAULT_BUTTON_TEXT["zg"];
         $answer->message_zg = $request->message_zg;
-        $answer->button_en = $request->button_en;
+        $answer->button_en = $request->button_en ?? self::DEFAULT_BUTTON_TEXT["en"];
         $answer->message_en = $request->message_en;
         $answer->image = $imagePath;
         $answer->status = $request->status;

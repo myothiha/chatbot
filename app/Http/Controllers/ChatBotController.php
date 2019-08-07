@@ -91,9 +91,8 @@ class ChatBotController extends Controller
                     // 2 Ask User to input his request.
                     $this->chatBot->askUserToInputQuestion();
                 } else if ( $this->isNotManuallyAsk($payload) ) {
-
-                    $this->chatBot->reply(["Thank you"], ApiConstant::TEXT);
-
+                    $this->chatBot->reply(["Thank you. Ask another question."], ApiConstant::TEXT);
+                    $this->response($fbUser->language); // Response Stop Question.
                 } else {
                     $this->response($fbUser->language, $payload);
                 }

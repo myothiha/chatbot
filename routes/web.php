@@ -20,7 +20,7 @@ Route::post('/login', 'LoginController@check');
 //Route::resource('questions', 'QuestionController');
 
 Route::group(['middleware' => 'auth'], function () {
-
+    
     Route::get('/logout', 'LoginController@logout');
 
     Route::resource('users', 'UserController');

@@ -82,6 +82,7 @@
                 <th scope="col">Answer (MM3)</th>
                 <th scope="col">Answer (ZG)</th>
                 <th scope="col">Image</th>
+                <th scope="col">Status</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -93,7 +94,12 @@
                     <td><p>{!! nl2br($answer->message_en) !!}</p></td>
                     <td><p>{!! nl2br($answer->message_mm3) !!}</p></td>
                     <td><p>{!! nl2br($answer->message_zg) !!}</p></td>
-                    <td><img src="{{ $answer->thumbnail }}" /></td>
+                    <td><img src="{{ $answer->thumbnail }}"/></td>
+                    <td>
+                        <p>
+                            {!! $answer->status ? "<span class='active-status'>Active</span>" :  "<span class='inactive-status'>Inactive</span>" !!}
+                        </p>
+                    </td>
                     <td><a href="{{ action('AnswerController@edit', [$parentId, $answer->id]) }}"
                            class="btn btn-outline-dark">Edit</a></td>
                     <td>
@@ -165,6 +171,7 @@
                 <th scope="col">Question (MM3)</th>
                 <th scope="col">Question (ZG)</th>
                 <th scope="col">Image</th>
+                <th>Status</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -177,7 +184,10 @@
                     <td><p>{!! nl2br($question->message_en) !!}</p></td>
                     <td><p>{!! nl2br($question->message_mm3) !!}</p></td>
                     <td><p>{!! nl2br($question->message_zg) !!}</p></td>
-                    <td><img src="{{ $question->thumbnail }}" /></td>
+                    <td><img src="{{ $question->thumbnail }}"/></td>
+                    <td>
+                        {!! $question->status ? "<span class='active-status'>Active</span>" :  "<span class='inactive-status'>Inactive</span>" !!}
+                    </td>
                     <td><a href="{{ action('QuestionController@index', $question->id) }}"
                            class="btn btn-outline-info">Sub Questions</a></td>
                     <td><a href="{{ action('QuestionController@edit', [$parentId, $question->id]) }}"

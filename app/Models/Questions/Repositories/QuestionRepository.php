@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 class QuestionRepository extends MessengerApi implements QuestionRepositoryInterface
 {
 
+    const DEFAULT_BUTTON_TEXT = [
+        "mm3" => "ရွေးချယ်ပါ",
+        "zg" => "ေရြးခ်ယ္ပါ",
+        "en" => "Choose"
+    ];
+
     public function __construct(Question $question)
     {
         parent::__construct($question);
@@ -46,11 +52,11 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
         $question->parent_id = $parentId;
         $question->traceQId = $request->traceQId;
         $question->tracePId = $request->tracePId;
-        $question->button_mm3 = $request->button_mm3;
+        $question->button_mm3 = $request->button_mm3 ?? self::DEFAULT_BUTTON_TEXT["mm3"];
         $question->message_mm3 = $request->message_mm3;
-        $question->button_zg = $request->button_zg;
+        $question->button_zg = $request->button_zg ?? self::DEFAULT_BUTTON_TEXT["zg"];
         $question->message_zg = $request->message_zg;
-        $question->button_en = $request->button_en;
+        $question->button_en = $request->button_en ?? self::DEFAULT_BUTTON_TEXT["en"];
         $question->message_en = $request->message_en;
         $question->image = $imagePath;
         $question->save();
@@ -70,11 +76,11 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
         $question->parent_id = $parentId;
         $question->traceQId = $request->traceQId;
         $question->tracePId = $request->tracePId;
-        $question->button_mm3 = $request->button_mm3;
+        $question->button_mm3 = $request->button_mm3 ?? self::DEFAULT_BUTTON_TEXT["mm3"];
         $question->message_mm3 = $request->message_mm3;
-        $question->button_zg = $request->button_zg;
+        $question->button_zg = $request->button_zg ?? self::DEFAULT_BUTTON_TEXT["zg"];
         $question->message_zg = $request->message_zg;
-        $question->button_en = $request->button_en;
+        $question->button_en = $request->button_en ?? self::DEFAULT_BUTTON_TEXT["en"];
         $question->message_en = $request->message_en;
         $question->image = $imagePath;
         $question->status = $request->status;

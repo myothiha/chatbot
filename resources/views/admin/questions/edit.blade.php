@@ -56,7 +56,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (Myanmar 3)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_mm3"rows="10" name="button_mm3" value="{{ $question->button_mm3 }}"
-                       placeholder="Text want to display on Button" required>
+                       placeholder="Text want to display on Button">
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (Zawgyi)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_zg" name="button_zg" value="{{ $question->button_zg }}"
-                       placeholder="Text want to display on Button" required>
+                       placeholder="Text want to display on Button">
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             <label for="type" class="col-sm-2 col-form-label">Button (English)</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="button_en" name="button_en" value="{{ $question->button_en }}"
-                       placeholder="Text want to display on Button" required>
+                       placeholder="Text want to display on Button">
             </div>
         </div>
 
