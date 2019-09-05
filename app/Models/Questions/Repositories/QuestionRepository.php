@@ -24,12 +24,12 @@ class QuestionRepository extends MessengerApi implements QuestionRepositoryInter
         parent::__construct($question);
     }
 
-    function getSubQuestions($parentId)
+    function getSubQuestions($parentId = 0)
     {
         return Question::subQuestions($parentId)->get();
     }
 
-    function getVisibleQuestions($parentId)
+    function getVisibleQuestions($parentId = 0)
     {
         return $this->model->getSubQuestions($parentId)->visible();
     }

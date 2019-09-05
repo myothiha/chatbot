@@ -43,10 +43,13 @@ trait ResponseHandlerTrait
 
     public function multiplePostBack(array $messages)
     {
+        $response = [];
         foreach ($messages as $message)
         {
-            $this->postBackButton([$message['button']], $message['text']);
+            $response[] = $this->postBackButton([$message['button']], $message['text']);
         }
+
+        return $response;
     }
 
     public function postBackButton(array $buttons, $text = null)
@@ -67,11 +70,12 @@ trait ResponseHandlerTrait
             ],
         ];
 
-        $this->sendRequest('POST', $data);
+        return $this->sendRequest('POST', $data);
     }
 
     private function text($messages)
     {
+        $response = [];
         foreach ($messages as $message)
         {
             $data = [
@@ -83,12 +87,17 @@ trait ResponseHandlerTrait
                 ],
             ];
 
+            $response[] = $data;
+
             $this->sendRequest('POST', $data);
         }
+        return $response;
     }
 
     private function asyncText($messages)
     {
+
+        $response = [];
         foreach ($messages as $message)
         {
             $data = [
@@ -100,8 +109,12 @@ trait ResponseHandlerTrait
                 ],
             ];
 
+            $response[] = $data;
+
             $this->sendAsyncRequest('POST', $data);
         }
+
+        return $response;
     }
 
     private function quickReply($messages, $text = null)
@@ -116,11 +129,13 @@ trait ResponseHandlerTrait
             ],
         ];
 
-        $this->sendRequest('POST', $data);
+        return $this->sendRequest('POST', $data);
     }
 
     private function image($messages)
     {
+
+        $response = [];
         foreach($messages as $message) {
             $image = [
                 "recipient" => [
@@ -148,14 +163,18 @@ trait ResponseHandlerTrait
                 ],
             ];
 
+            $response[] = [$image, $text];
+
             $this->sendRequest('POST', $text);
         }
+
+        return $response;
     }
 
     private function gallery($messages)
     {
         $msgCollections = collect($messages);
-
+        $response = [];
         foreach($msgCollections->chunk(10) as $messages) {
             $data = [
                 "recipient" => [
@@ -172,8 +191,12 @@ trait ResponseHandlerTrait
                 ],
             ];
 
+            $response[] = $data;
+
             $this->sendRequest('POST', $data);
         }
+
+        return $response;
     }
 
     public function senderAction($action) {
@@ -190,6 +213,7 @@ trait ResponseHandlerTrait
     private function sendRequest($requestType, $data)
     {
         $this->httpRequest($requestType, $data);
+        return $data;
     }
 
     private function sendAsyncRequest($requestType, $data)

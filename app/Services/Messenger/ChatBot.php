@@ -215,23 +215,27 @@ class ChatBot
 
     public function reply(Array $message, $type, $text=null)
     {
+        $response = [];
+
         switch ($type) {
             case ApiConstant::TEXT :
                 $response = $this->text($message);
                 break;
             case ApiConstant::QUICK_REPLY :
-                $this->quickReply($message, $text);
+                $response = $this->quickReply($message, $text);
                 break;
             case ApiConstant::BUTTON :
-                $this->multiplePostBack($message);
+                $response = $this->multiplePostBack($message);
                 break;
             case ApiConstant::IMAGE :
-                $this->image($message);
+                $response = $this->image($message);
                 break;
             case ApiConstant::GALLERY :
-                $this->gallery($message);
+                $response = $this->gallery($message);
                 break;
         }
+
+        return $response;
     }
 
     public function greetUser()

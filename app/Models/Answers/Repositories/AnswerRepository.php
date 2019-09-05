@@ -28,12 +28,12 @@ class AnswerRepository extends MessengerApi implements AnswerRepositoryInterface
         parent::__construct($answer);
     }
 
-    function getAnswers($questionId)
+    function getAnswers($questionId = 0)
     {
         return $this->model->where(['question_id' => $questionId])->orderBy('created_at')->get();
     }
 
-    function getVisibleAnswers($questionId)
+    function getVisibleAnswers($questionId = 0)
     {
         return $this->model->getAnswers($questionId)->visible();
     }

@@ -9,6 +9,8 @@ use App\Jobs\TimeOutMessageProcessor;
 use App\Models\Answers\Interfaces\AnswerRepositoryInterface;
 use App\Models\AnswerTypes\AnswerType;
 use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
+use App\Models\Questions\Question;
+use App\Models\Questions\Repositories\QuestionRepository;
 use App\Models\QuestionTypes\QuestionType;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
@@ -57,33 +59,40 @@ class ChatBotController extends Controller
     {
          //Log::debug($request->all());
 
+//        dd($request);
+
         $senderId = $this->getSenderId($request);
 
         // Checks this is an event from a page subscription
         if ($request->object == 'page' AND json_encode($senderId)!='null' AND $senderId!=422359484916418) {
 
-            Log::debug("ddddd". json_encode($request->toArray()) );
-
-            $fbUser = FbUser::firstOrNew(['psid' => $this->getSenderId($request)]);
+            $fbUser = FbUser::firstOrNew(['psid' => $senderId]);
 
             $this->chatBot->setFbUser($fbUser);
 
             $this->setUserActive();
 
-            $this->chatBot->senderAction('mark_seen');
-            $this->chatBot->senderAction('typing_on');
-            sleep(1);
-
             if ($payload = $this->getPayload($request)) {
+
+                /*$this->chatBot->senderAction('mark_seen');
+                $this->chatBot->senderAction('typing_on');
+                sleep(1);*/
+
                 Log::debug($payload);
+
                 if ($payload == "start") {
-                    $this->askToChooseLanguage($fbUser);
+                    return $this->askToChooseLanguage($fbUser);
                 } else if ($this->onSelectedLanguage($payload)) {
                     $fbUser->language = $payload;
                     $fbUser->save();
                     $this->chatBot->greetUser();
-                    $this->response($fbUser->language);
-                } else if ($this->isManuallyAsk($payload)) {
+                    return $this->response($fbUser->language);
+                }
+
+                /*
+                 * Disable Ask Manually Feature
+                 * */
+                /*else if ($this->isManuallyAsk($payload)) {
                     // Todo ask manually
                     // 1 Open Conversation Mode
                     $fbUser->conversationMode(ApiConstant::CONVERSATION_ON);
@@ -92,11 +101,17 @@ class ChatBotController extends Controller
                     $this->chatBot->askUserToInputQuestion();
                 } else if ( $this->isNotManuallyAsk($payload) ) {
                     $this->chatBot->reply(["Thank you. Ask another question."], ApiConstant::TEXT);
-                    $this->response($fbUser->language); // Response Stop Question.
-                } else {
-                    $this->response($fbUser->language, $payload);
+                    $this->response($fbUser->language); // Response Top Question.
+                }*/
+                else {
+                    return $this->response($fbUser->language, $payload);
                 }
-            } else if ($message = $this->getTextMessage($request)) {
+            }
+
+            /*
+             * Todo Disable Search Feature. Do nothing if text message receive
+             * */
+            /*else if ($message = $this->getTextMessage($request)) {
 
                 $currentLanguage = $this->chatBot->getFbUser()->language;
 
@@ -125,20 +140,22 @@ class ChatBotController extends Controller
                         $this->chatBot->reply($data->toArray(), ApiConstant::GALLERY);
                     }
                 }
-            }
+            }*/
 
-            // just to verify web hook
+            // To verify web hook
             echo $this->getTextMessage($request) ?? '';
         }
     }
 
     public function response($lang, $questionId = 0)
     {
+        $response = [];
+
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
         if ($answerType) {
             $answers = $this->answerRepo->prepare($questionId, $answerType->type, $lang);
-            $this->chatBot->reply($answers->toArray(), $answerType->type);
+            $response[] = $this->chatBot->reply($answers->toArray(), $answerType->type);
         }
 
         $questionType = QuestionType::where('question_id', $questionId)->first();
@@ -149,16 +166,21 @@ class ChatBotController extends Controller
             if($questions->isEmpty()){
                 $this->endQuestion($questionId);
             } else {
-                if($this->isTopQuestion($questionId))
+                /*
+                 * Remove Ask Admin Button from Top Question
+                 * */
+                /*if($this->isTopQuestion($questionId))
                 {
                     $askManually = $this->askManuallyButton();
                     $questions->push($askManually);
-                }
-                $this->chatBot->reply($questions->toArray(), $questionType->type);
+                }*/
+                $response[] = $this->chatBot->reply($questions->toArray(), $questionType->type);
             }
         } else {
             $this->endQuestion($questionId);
         }
+
+        return $response;
     }
 
     private function endQuestion($questionId)
@@ -187,7 +209,7 @@ class ChatBotController extends Controller
             ],
         ];
 
-        $this->chatBot->postBackButton($buttons, "Choose Language.");
+        return $this->chatBot->postBackButton($buttons, "Choose Language.");
     }
 
     private function askManuallyButton()
