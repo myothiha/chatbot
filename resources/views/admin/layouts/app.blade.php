@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -21,7 +20,8 @@
     <!-- Custom styles for this template -->
     <link href="/css/modern-business.css" rel="stylesheet">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css"
+          rel="stylesheet">
 </head>
 
 <body>
@@ -29,7 +29,7 @@
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="/"><img src="/img/logo.png" class="logo" />Miss Migration</a>
+        <a class="navbar-brand" href="/"><img src="/img/logo.png" class="logo"/>Miss Migration</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -41,16 +41,27 @@
                     <li class="nav-item {{ request()->is('questions/*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ action('QuestionController@index', 0) }}">Bot Data Entry</a>
                     </li>
-                    <li class="nav-item {{ request()->path() }} {{ request()->is('conversations') ? 'active' : 'aaa' }}">
+                    <li class="nav-item {{ request()->path() }} {{ request()->is('conversations') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ action('ConversationController@index') }}">Messages</a>
                     </li>
-                    <li class="nav-item {{ request()->path() }} {{ request()->is('broadcast') ? 'active' : 'aaa' }}">
-                        <a class="nav-link" href="{{ action('BroadcastController@getBroadcast') }}">Broadcast</a>
+                    <li class="nav-item {{ request()->path() }} {{ request()->is('analytics') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ action('ButtonAnalyticsController@index') }}">Button Analytics</a>
                     </li>
-                    <li class="nav-item {{ request()->path() }} {{ request()->is('users') ? 'active' : 'aaa' }}">
+                    <li class="nav-item dropdown {{ request()->path() }} {{ request()->is('broadcast') ? 'active' : '' }}">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            Broadcast
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+                            <a class="dropdown-item"
+                               href="{{ action('BroadcastController@getBroadcast') }}">Message</a>
+                            <a class="dropdown-item"
+                               href="{{ action('BroadcastController@getBroadcastVideo') }}">Video</a>
+                        </div>
+                    </li>
+                    <li class="nav-item {{ request()->path() }} {{ request()->is('users') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ action('UserController@index') }}">Users</a>
                     </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
@@ -77,7 +88,7 @@
         </h1>
     </div>
     <div class="row">
-            @yield('breadcrumb')
+        @yield('breadcrumb')
     </div>
 
     @include('partials.alert')

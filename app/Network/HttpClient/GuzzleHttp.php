@@ -18,7 +18,7 @@ class GuzzleHttp implements HttpClientInterface
 
     private $guzzleClient;
 
-    public function __construct($baseUri, $timeout = 10.0)
+    public function __construct($baseUri, $timeout = 20.0)
     {
         $this->guzzleClient = new Client([
             // Base URI is used with relative requests

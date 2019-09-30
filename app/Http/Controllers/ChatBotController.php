@@ -12,6 +12,7 @@ use App\Models\Questions\Interfaces\QuestionRepositoryInterface;
 use App\Models\Questions\Question;
 use App\Models\Questions\Repositories\QuestionRepository;
 use App\Models\QuestionTypes\QuestionType;
+use App\Services\AnalyticsReport\QuestionAnalyticsTracker;
 use App\Services\Messenger\ApiConstant;
 use App\Services\Messenger\ChatBot;
 use App\Services\Messenger\RequestHandlerTrait;
@@ -57,14 +58,14 @@ class ChatBotController extends Controller
 
     public function handle(Request $request)
     {
-         //Log::debug($request->all());
+        //Log::debug($request->all());
 
 //        dd($request);
 
         $senderId = $this->getSenderId($request);
 
         // Checks this is an event from a page subscription
-        if ($request->object == 'page' AND json_encode($senderId)!='null' AND $senderId!=422359484916418) {
+        if ($request->object == 'page' AND json_encode($senderId) != 'null' AND $senderId != 422359484916418) {
 
             $fbUser = FbUser::firstOrNew(['psid' => $senderId]);
 
@@ -151,6 +152,11 @@ class ChatBotController extends Controller
     {
         $response = [];
 
+        if ($questionId != 0) {
+            $questionAnalyticsReport = QuestionAnalyticsTracker::createFrom($questionId);
+            $questionAnalyticsReport->increaseClickCounter();
+        }
+
         $answerType = AnswerType::where('answer_id', $questionId)->first();
 
         if ($answerType) {
@@ -163,7 +169,7 @@ class ChatBotController extends Controller
         if ($questionType) {
             $questions = $this->questionRepo->prepare($questionId, $questionType->type, $lang);
 
-            if($questions->isEmpty()){
+            if ($questions->isEmpty()) {
                 $this->endQuestion($questionId);
             } else {
                 /*
@@ -214,7 +220,7 @@ class ChatBotController extends Controller
 
     private function askManuallyButton()
     {
-        $data= $this->chatBot->getAskAdminMenus();
+        $data = $this->chatBot->getAskAdminMenus();
         return [
             "title" => $data["message"],
             "image_url" => UriRequest::root() . '/uploads/ask_admin.jpg',
@@ -236,7 +242,7 @@ class ChatBotController extends Controller
 
     private function isTopQuestion($questionId)
     {
-        return $questionId==0;
+        return $questionId == 0;
     }
 
     private function isManuallyAsk($payload)
@@ -305,8 +311,6 @@ class ChatBotController extends Controller
         $json = $this->questionRepo->transform($result, ApiConstant::GALLERY, ApiConstant::ZAWGYI);*/
 //        dd($json->toArray());
     }
-
-
 
 
 }

@@ -25,8 +25,19 @@ class BroadcastController extends Controller
 
     public function broadcast(Request $request)
     {
-        $this->chatbot->broadcast($request->message);
+        $this->chatbot->broadcastMessage($request->message);
         return redirect()->action('BroadcastController@getBroadcast');
+    }
+
+    public function getBroadcastVideo(Request $request)
+    {
+        return view('admin.broadcast.video');
+    }
+
+    public function broadcastVideo(Request $request)
+    {
+        $this->chatbot->broadcastMessage($request->url, "video");
+        return redirect()->action('BroadcastController@getBroadcastVideo');
     }
 
 }

@@ -20,7 +20,7 @@ Route::post('/login', 'LoginController@check');
 //Route::resource('questions', 'QuestionController');
 
 Route::group(['middleware' => 'auth'], function () {
-    
+
     Route::get('/logout', 'LoginController@logout');
 
     Route::resource('users', 'UserController');
@@ -47,10 +47,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/answers/{questionId}/update/{answer}',       'AnswerController@update');
     Route::delete('/answers/{questionId}/delete/{answer}',    'AnswerController@destroy');
 
+    Route::get('/analytics', 'ButtonAnalyticsController@index');
+    Route::get('/analytics/export-excel', 'ButtonAnalyticsController@exportToExcel');
+
     Route::post('/answerTypes/{questionId}', 'AnswerTypeController@store');
 
     Route::get('/test/', 'ChatBotController@test');
     Route::get('broadcast', 'BroadcastController@getBroadcast');
     Route::post('broadcast', 'BroadcastController@broadcast');
+
+    Route::get('broadcast-video', 'BroadcastController@getBroadcastVideo');
+    Route::post('broadcast-video', 'BroadcastController@broadcastVideo');
 });
 
